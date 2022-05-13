@@ -1,0 +1,8 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>br.com.adamastor</groupId>
+  <artifactId>votacao</artifactId>
+  <version>1.0.0</version>
+  <name>API para votação</name>
+  <description>Implementação de uma API Rest, que permite cadastro básico dos candidatos, eleitores, dos votos e recurso para consultar a quantidade de votos para cada candidato.</description>
+</project>
