@@ -33,7 +33,7 @@ public class Cargo implements Serializable {
 	@Column(name = "DT_ALTERACAO")
 	private LocalDateTime alteradoEm;
 	
-	@Column(name = "DT_DESATIVO")
+	@Column(name = "DT_DESATIVADO")
 	private LocalDateTime desativadoEm;
 	
 	@Column(name = "ATIVO")

@@ -20,7 +20,7 @@ public class CargoDTO {
 	
 	private LocalDateTime desativadoEm;
 	
-	private Boolean apto;
+	private Boolean ativo;
 	
 	public CargoDTO(Cargo cargo) {
 		this.id = cargo.getId();
@@ -28,7 +28,7 @@ public class CargoDTO {
 		this.criadoEm = cargo.getCriadoEm();
 		this.alteradoEm = cargo.getAlteradoEm();
 		this.desativadoEm = cargo.getDesativadoEm();
-		this.apto = cargo.isAtivo();
+		this.ativo = cargo.isAtivo();
 	}
 	
 	public static List<CargoDTO> converter(List<Cargo> cargos){

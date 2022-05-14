@@ -15,11 +15,13 @@ public class CargoCadastroForm {
 	@Size(min = 4, max = 100)
 	private String nome;
 	
+	private boolean ativo;
+	
 	public Cargo gerarCargo() {
 		Cargo c = new Cargo();
 		c.setNome(nome.toUpperCase());
 		c.setCriadoEm(LocalDateTime.now());
-		c.setAtivo(true);
+		c.setAtivo(ativo);
 		return c;
 	}
 }
