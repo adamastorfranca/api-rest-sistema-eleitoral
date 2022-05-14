@@ -33,10 +33,13 @@ public class Eleitor implements Serializable {
 	@Column(name = "DT_CRIACAO")
 	private LocalDateTime criadoEm;
 	
-	@Column(name = "DT_ALTERACAO", nullable = false)
+	@Column(name = "DT_ALTERACAO")
 	private LocalDateTime alteradoEm;
 	
-	@Column(name = "DT_EXCLUSAO", nullable = false)
-	private LocalDateTime deletadoEm;
+	@Column(name = "DT_DESATIVADO")
+	private LocalDateTime desativadoEm;
+	
+	@Column(name = "ATIVO")
+	private boolean ativo;
 
 }

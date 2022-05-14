@@ -7,13 +7,13 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class CargoAtualizacaoForm {
+public class EleitorAtualizacaoForm {
 
 	@NotNull
 	private Long id;
 	
 	@NotBlank
-	@Size(min = 4, max = 50)
+	@Size(min = 10, max = 100)
 	private String nome;
 	
 	private boolean ativo;

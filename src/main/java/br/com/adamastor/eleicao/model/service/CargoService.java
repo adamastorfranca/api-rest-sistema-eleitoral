@@ -19,44 +19,47 @@ import br.com.adamastor.eleicao.model.repository.CargoRepository;
 public class CargoService {
 
 	@Autowired
-	private CargoRepository cargoRepository;
+	private CargoRepository repository;
 
 	public CargoDTO cadastrar(CargoCadastroForm form) {
-		Optional<Cargo> resultado = cargoRepository.findByNome(form.getNome());
+		Optional<Cargo> resultado = repository.findByNome(form.getNome());
 		if (resultado.isPresent()) {
 			throw new AplicacaoException("O cargo já está cadastrado");
 		}
 		Cargo c = form.gerarCargo();
-		cargoRepository.save(c);
+		repository.save(c);
 		return new CargoDTO(c);
 	}
 
 	public List<CargoDTO> listarTodos() {
-		List<Cargo> cargos = cargoRepository.findAll();
-		if (cargos.isEmpty()) {
-			throw new AplicacaoException("Não há cargos cadastrados");
-		}
-		return CargoDTO.converter(cargos);
+		return CargoDTO.converter(repository.findAll());
 	}
 
 	public CargoDTO buscarPorId(Long id) {
-		Cargo c = verificarSeIdExiste(id);
-		return new CargoDTO(c);
+		Optional<Cargo> resultado = repository.findById(id);
+		if (resultado.isPresent()) {
+			return new CargoDTO(resultado.get());
+		}
+		return null;
 	}
 
 	public CargoDTO buscarPorNome(String nome) {
-		Optional<Cargo> resultado = cargoRepository.findByNome(nome.toUpperCase());
-		if (!resultado.isPresent()) {
-			throw new AplicacaoException("Não há cargo com nome informado");
+		Optional<Cargo> resultado = repository.findByNome(nome.toUpperCase());
+		if (resultado.isPresent()) {
+			return new CargoDTO(resultado.get());
 		}
-		return new CargoDTO(resultado.get());
+		return null;
 	}
 
 	public CargoDTO atualizar(CargoAtualizacaoForm form) {
-		Cargo c = verificarSeIdExiste(form.getId());
+		Optional<Cargo> resultado = repository.findById(form.getId());
+		if (!resultado.isPresent()) {
+			return null;
+		}
+		Cargo c = resultado.get();
 		if (!c.getNome().equals(form.getNome().toUpperCase())) {
-			Optional<Cargo> resultado = cargoRepository.findByNome(form.getNome());
-			if (resultado.isPresent()) {
+			Optional<Cargo> resultado2 = repository.findByNome(form.getNome());
+			if (resultado2.isPresent()) {
 				throw new AplicacaoException("O cargo já está cadastrado");
 			}
 		}
@@ -67,17 +70,25 @@ public class CargoService {
 		if (!form.isAtivo()) {
 			c.setDesativadoEm(LocalDateTime.now());
 		}
-		cargoRepository.save(c);
+		repository.save(c);
 		return new CargoDTO(c);
 	}
 
-	public void deletarPorId(Long id) {
-		Cargo c = verificarSeIdExiste(id);
-		cargoRepository.delete(c);
+	public void deletar(Long id) {	
+		Optional<Cargo> resultado = repository.findById(id);
+		if (!resultado.isPresent()) {
+			throw new AplicacaoException("ID informado não está cadastrado");
+		}
+		Cargo c = resultado.get();
+		repository.delete(c);
 	}
 
 	public CargoDTO alterarStatus(CargoStatusForm form) {
-		Cargo c = verificarSeIdExiste(form.getId());
+		Optional<Cargo> resultado = repository.findById(form.getId());
+		if (!resultado.isPresent()) {
+			return null;
+		}
+		Cargo c = resultado.get();
 		if (form.isAtivo()) {
 			c.setAtivo(form.isAtivo());
 			c.setAlteradoEm(LocalDateTime.now());
@@ -88,32 +99,15 @@ public class CargoService {
 			c.setAlteradoEm(LocalDateTime.now());
 			c.setDesativadoEm(LocalDateTime.now());
 		}
-		cargoRepository.save(c);
+		repository.save(c);
 		return new CargoDTO(c);
 	}
 	
 	public List<CargoDTO> listarAtivos() {
-		List<Cargo> cargos = cargoRepository.findByAtivoTrue();
-		if (cargos.isEmpty()) {
-			throw new AplicacaoException("Não há cargos cadastrados");
-		}
-		return CargoDTO.converter(cargos);
+		return CargoDTO.converter(repository.findByAtivoTrue());
 	}
 
 	public List<CargoDTO> listarInativos() {
-		List<Cargo> cargos = cargoRepository.findByAtivoFalse();
-		if (cargos.isEmpty()) {
-			throw new AplicacaoException("Não há cargos cadastrados");
-		}
-		return CargoDTO.converter(cargos);
+		return CargoDTO.converter(repository.findByAtivoFalse());
 	}
-	
-	private Cargo verificarSeIdExiste(Long id) {
-		Optional<Cargo> resultado = cargoRepository.findById(id);
-		if (!resultado.isPresent()) {
-			throw new AplicacaoException("Não há cargo com ID informado");
-		}
-		return resultado.get();
-	}
-
 }

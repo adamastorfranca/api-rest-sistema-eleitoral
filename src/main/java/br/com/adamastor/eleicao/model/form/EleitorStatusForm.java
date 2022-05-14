@@ -5,8 +5,8 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class CargoStatusForm {
-
+public class EleitorStatusForm {
+	
 	@NotNull
 	private Long id;
 

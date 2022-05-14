@@ -24,7 +24,7 @@ public class Cargo implements Serializable {
 	@Column(name = "ID_CARGO")
 	private Long id;
 	
-	@Column(name = "DS_NOME", length = 100)
+	@Column(name = "DS_NOME", length = 50)
 	private String nome;
 	
 	@Column(name = "DT_CRIACAO")

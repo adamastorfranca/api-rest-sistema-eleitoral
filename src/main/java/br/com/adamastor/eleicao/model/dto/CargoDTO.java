@@ -34,5 +34,4 @@ public class CargoDTO {
 	public static List<CargoDTO> converter(List<Cargo> cargos){
 		return cargos.stream().map(CargoDTO::new).collect(Collectors.toList());
 	}
-
 }

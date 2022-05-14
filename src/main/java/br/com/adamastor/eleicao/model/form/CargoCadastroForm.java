@@ -12,7 +12,7 @@ import lombok.Data;
 public class CargoCadastroForm {
 
 	@NotBlank
-	@Size(min = 4, max = 100)
+	@Size(min = 4, max = 50)
 	private String nome;
 	
 	private boolean ativo;
