@@ -16,6 +16,7 @@ import br.com.adamastor.eleicao.model.form.EleitorStatusForm;
 import br.com.adamastor.eleicao.model.repository.EleitorRepository;
 
 @Service
+
 public class EleitorService {
 	
 	@Autowired
@@ -114,5 +115,14 @@ public class EleitorService {
 
 	public List<EleitorDTO> listarInativos() {
 		return EleitorDTO.converter(repository.findByAtivoFalse());
+	}
+
+	public void cadastrarCandidatoComoEleitor(EleitorCadastroForm form) {
+		Optional<Eleitor> resultado = repository.findByCpf(form.getCpf());
+		if (resultado.isPresent()) {
+			return;
+		}
+		Eleitor e = form.gerarEleitor();
+		repository.save(e);
 	}
 }

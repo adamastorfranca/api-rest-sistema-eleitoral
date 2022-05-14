@@ -24,10 +24,10 @@ public class Cargo implements Serializable {
 	@Column(name = "ID_CARGO")
 	private Long id;
 	
-	@Column(name = "DS_NOME", length = 50)
+	@Column(name = "DS_NOME", unique = true, nullable = false, length = 50)
 	private String nome;
 	
-	@Column(name = "DT_CRIACAO")
+	@Column(name = "DT_CRIACAO", nullable = false)
 	private LocalDateTime criadoEm;
 	
 	@Column(name = "DT_ALTERACAO")
@@ -36,6 +36,6 @@ public class Cargo implements Serializable {
 	@Column(name = "DT_DESATIVADO")
 	private LocalDateTime desativadoEm;
 	
-	@Column(name = "ATIVO")
+	@Column(name = "ATIVO", nullable = false)
 	private boolean ativo;
 }

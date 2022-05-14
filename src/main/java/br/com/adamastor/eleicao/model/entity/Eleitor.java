@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import lombok.Data;
 
 @Entity
@@ -24,13 +26,14 @@ public class Eleitor implements Serializable {
 	@Column(name = "ID_ELEITOR")
 	private Long id;
 	
-	@Column(name = "DS_NOME", length = 100)
+	@Column(name = "DS_NOME", nullable = false, length = 100)
 	private String nome;
 	
-	@Column(name = "NU_CPF", unique = true, length = 11)
+	@CPF
+	@Column(name = "NU_CPF", unique = true, nullable = false, length = 11)
 	private String cpf;
 
-	@Column(name = "DT_CRIACAO")
+	@Column(name = "DT_CRIACAO", nullable = false)
 	private LocalDateTime criadoEm;
 	
 	@Column(name = "DT_ALTERACAO")
@@ -39,7 +42,7 @@ public class Eleitor implements Serializable {
 	@Column(name = "DT_DESATIVADO")
 	private LocalDateTime desativadoEm;
 	
-	@Column(name = "ATIVO")
+	@Column(name = "ATIVO", nullable = false)
 	private boolean ativo;
 
 }

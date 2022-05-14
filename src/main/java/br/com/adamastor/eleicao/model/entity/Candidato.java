@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import lombok.Data;
 
 @Entity
@@ -26,16 +28,20 @@ public class Candidato implements Serializable {
 	@Column(name = "ID_CANDIDATO")
 	private Long id;
 	
-	@Column(name = "DS_NOME", length = 100)
+	@Column(name = "DS_NOME", nullable = false, length = 100)	
 	private String nome;
+		
+	@CPF
+	@Column(name = "NU_CPF", unique = true, nullable = false, length = 11)
+	private String cpf;
 	
-	@Column(name = "NU_CANDIDATO")
+	@Column(name = "NU_CANDIDATO", unique = true, nullable = false, length = 10)
 	private Integer numero;
 	
-	@Column(name = "DS_LEGENDA")
+	@Column(name = "DS_LEGENDA", nullable = false, length = 100)
 	private String legenda;	
 	
-	@Column(name = "DT_CRIACAO")
+	@Column(name = "DT_CRIACAO", nullable = false)
 	private LocalDateTime criadoEm;
 	
 	@Column(name = "DT_ALTERACAO")
@@ -44,7 +50,7 @@ public class Candidato implements Serializable {
 	@Column(name = "DT_DESATIVADO")
 	private LocalDateTime desativadoEm;
 	
-	@Column(name = "ATIVO")
+	@Column(name = "ATIVO", nullable = false)
 	private boolean ativo;
 	
 	@ManyToOne
