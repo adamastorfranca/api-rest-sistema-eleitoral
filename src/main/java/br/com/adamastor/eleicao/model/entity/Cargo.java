@@ -21,7 +21,7 @@ public class Cargo implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_ELEITOR")
+	@Column(name = "ID_CARGO")
 	private Long id;
 	
 	@Column(name = "DS_NOME", length = 100)
@@ -30,9 +30,12 @@ public class Cargo implements Serializable {
 	@Column(name = "DT_CRIACAO")
 	private LocalDateTime criadoEm;
 	
-	@Column(name = "DT_ALTERACAO", nullable = false)
+	@Column(name = "DT_ALTERACAO")
 	private LocalDateTime alteradoEm;
 	
-	@Column(name = "DT_EXCLUSAO", nullable = false)
-	private LocalDateTime deletadoEm;
+	@Column(name = "DT_DESATIVO")
+	private LocalDateTime desativadoEm;
+	
+	@Column(name = "ATIVO")
+	private boolean ativo;
 }
