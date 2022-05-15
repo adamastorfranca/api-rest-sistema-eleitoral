@@ -2,8 +2,6 @@ package br.com.adamastor.eleicao.controller.rest;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,12 +15,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.adamastor.eleicao.model.dto.CandidatoRequestDTO;
 import br.com.adamastor.eleicao.model.dto.CandidatoResponseDTO;
-import br.com.adamastor.eleicao.model.dto.form.CandidatoAtualizacaoForm;
-import br.com.adamastor.eleicao.model.dto.form.CandidatoCadastroForm;
+import br.com.adamastor.eleicao.model.entity.Candidato;
 import br.com.adamastor.eleicao.model.service.CandidatoService;
 
 @RestController
@@ -32,23 +31,37 @@ public class CandidatoRest {
 
 	@Autowired
 	private CandidatoService service;
+	
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<CandidatoResponseDTO>> buscar(
+			@RequestParam(value = "id", required = false) Long id,
+			@RequestParam(value = "nome", required = false) String nome,
+			@RequestParam(value = "cpf", required = false) String cpf,
+			@RequestParam(value = "cargo", required = false) Long cargoId,
+			@RequestParam(value = "numero", required = false) Integer numero,
+			@RequestParam(value = "legenda", required = false) String legenda,
+			@RequestParam(value = "ativo", required = false) Boolean ativo) {
+		List<Candidato> resultado = service.buscar(id, nome, cpf, cargoId, numero, legenda, ativo);
+
+		return new ResponseEntity<>(CandidatoResponseDTO.converter(resultado), HttpStatus.OK);
+	}
 		
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<CandidatoResponseDTO> cadastrar(@RequestBody @Valid CandidatoCadastroForm form) {
-		CandidatoResponseDTO dto = service.cadastrar(form);
-		if(dto == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	public @ResponseBody ResponseEntity<CandidatoResponseDTO> cadastrar(@RequestBody CandidatoRequestDTO formulario) {
+		Candidato c = service.cadastrar(formulario);
+		if(c == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(dto, HttpStatus.OK);
+		return new ResponseEntity<>(new CandidatoResponseDTO(c), HttpStatus.OK);
 	}
 	
-	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<CandidatoResponseDTO> atualizar(@RequestBody @Valid CandidatoAtualizacaoForm form) {
-		CandidatoResponseDTO dto = service.atualizar(form);
-		if(dto == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<CandidatoResponseDTO> atualizar(@PathVariable Long id, @RequestBody CandidatoRequestDTO formulario) {
+		Candidato c = service.atualizar(id, formulario);
+		if(c == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(dto, HttpStatus.OK);		
+		return new ResponseEntity<>(new CandidatoResponseDTO(c), HttpStatus.OK);		
 	}
 	
 	@DeleteMapping(value = "/{id}")
@@ -56,23 +69,4 @@ public class CandidatoRest {
 		service.deletar(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-		
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<CandidatoResponseDTO>> listarTodos() {
-		List<CandidatoResponseDTO> listaDto = service.listarTodos();
-		if(listaDto.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(listaDto, HttpStatus.OK);
-	}
-
-	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<CandidatoResponseDTO> buscarPorId(@PathVariable Long id) {
-		CandidatoResponseDTO dto = service.buscarPorId(id);
-		if(dto == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(dto, HttpStatus.OK);
-	}
-
 }

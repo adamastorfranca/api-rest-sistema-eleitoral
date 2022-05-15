@@ -31,7 +31,7 @@ public class CandidatoResponseDTO implements Serializable {
 
 	private LocalDateTime desativadoEm;
 
-	private boolean ativo;
+	private Boolean ativo;
 	
 	public CandidatoResponseDTO(Candidato candidato) {
 		this.id = candidato.getId();

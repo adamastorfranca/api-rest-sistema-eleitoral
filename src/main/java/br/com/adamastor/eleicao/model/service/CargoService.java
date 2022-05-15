@@ -91,16 +91,16 @@ public class CargoService {
 				}
 			}
 			c.setNome(formulario.getNome().toUpperCase());
-		}
-		c.setAlteradoEm(LocalDateTime.now());
+		}		
 		if(formulario.getAtivo() != null) {
 			c.setAtivo(formulario.getAtivo());
-			if (formulario.getAtivo()) {
+			if (formulario.getAtivo().booleanValue()) {
 				c.setDesativadoEm(null);
 			} else {
 				c.setDesativadoEm(LocalDateTime.now());
 			}
-		}		
+		}	
+		c.setAlteradoEm(LocalDateTime.now());
 		repository.save(c);
 		return c;
 	}

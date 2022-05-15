@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.adamastor.eleicao.model.dto.EleitorRequestDTO;
 import br.com.adamastor.eleicao.model.dto.EleitorResponseDTO;
-import br.com.adamastor.eleicao.model.dto.form.VotoFormDTO;
+import br.com.adamastor.eleicao.model.dto.VotoRequestDTO;
 import br.com.adamastor.eleicao.model.entity.Eleitor;
 import br.com.adamastor.eleicao.model.service.EleitorService;
 import br.com.adamastor.eleicao.model.service.VotoService;
@@ -58,7 +58,7 @@ public class EleitorRest {
 		return new ResponseEntity<>(new EleitorResponseDTO(e), HttpStatus.OK);
 	}
 	
-	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<EleitorResponseDTO> atualizar(@PathVariable Long id, @RequestBody EleitorRequestDTO formulario) {
 		Eleitor e = service.atualizar(id, formulario);
 		if(e == null) {
@@ -74,7 +74,7 @@ public class EleitorRest {
 	}
 	
 	@PostMapping(value = "/votar", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> votar(@RequestBody @Valid VotoFormDTO voto) {
+	public ResponseEntity<Void> votar(@RequestBody @Valid VotoRequestDTO voto) {
 		votoService.votar(voto);
 
 		return new ResponseEntity<>(HttpStatus.OK);

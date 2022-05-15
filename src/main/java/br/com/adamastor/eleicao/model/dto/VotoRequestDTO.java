@@ -1,9 +1,9 @@
-package br.com.adamastor.eleicao.model.dto.form;
+package br.com.adamastor.eleicao.model.dto;
 
 import lombok.Data;
 
 @Data
-public class VotoFormDTO {
+public class VotoRequestDTO {
 	
 	private Long idEleitor;
 	

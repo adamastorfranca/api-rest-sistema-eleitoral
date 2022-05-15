@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.adamastor.eleicao.model.dto.form.VotoFormDTO;
+import br.com.adamastor.eleicao.model.dto.VotoRequestDTO;
 import br.com.adamastor.eleicao.model.entity.Candidato;
 import br.com.adamastor.eleicao.model.entity.Cargo;
 import br.com.adamastor.eleicao.model.entity.Eleitor;
@@ -29,7 +29,7 @@ public class VotoService {
 	private CargoService cargoService;
 	
 	@Transactional(rollbackOn = AplicacaoException.class)
-	public void votar(VotoFormDTO voto) {
+	public void votar(VotoRequestDTO voto) {
 		Voto v = new Voto();
 		VotoId vId = new VotoId();
 		Cargo cargo = cargoService.buscarCargoDaVotacao(voto.getIdCargo());

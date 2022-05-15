@@ -42,11 +42,11 @@ public class EleitorService {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Eleitor> cq = cb.createQuery(Eleitor.class);
 
-        Root<Eleitor> cargo = cq.from(Eleitor.class);
-        Predicate idPredicate = cb.equal(cargo.get("id"), id);
-        Predicate nomePredicate = cb.like(cargo.get("nome"), "%" + nome + "%");
-        Predicate cpfPredicate = cb.like(cargo.get("cpf"), "%" + cpf + "%");
-        Predicate ativoPredicate = cb.equal(cargo.get("ativo"), ativo);
+        Root<Eleitor> eleitor = cq.from(Eleitor.class);
+        Predicate idPredicate = cb.equal(eleitor.get("id"), id);
+        Predicate nomePredicate = cb.like(eleitor.get("nome"), "%" + nome + "%");
+        Predicate cpfPredicate = cb.like(eleitor.get("cpf"), "%" + cpf + "%");
+        Predicate ativoPredicate = cb.equal(eleitor.get("ativo"), ativo);
         
         List<Predicate> predicates = new ArrayList<>();
         if (!ObjectUtils.isEmpty(id)) {
@@ -87,7 +87,9 @@ public class EleitorService {
 			return null;
 		}
 		Eleitor e = resultado.get();
-		e.setNome(formulario.getNome().toUpperCase());
+		if (!formulario.getCpf().isBlank() && formulario.getCpf() != null) {
+			e.setNome(formulario.getNome().toUpperCase());
+		}
 		if (!formulario.getCpf().isBlank() && formulario.getCpf() != null) {
 			if (!e.getCpf().equals(formulario.getCpf())) {
 				Optional<Eleitor> resultado2 = repository.findByCpf(formulario.getCpf());
@@ -99,12 +101,13 @@ public class EleitorService {
 		}
 		if (formulario.getAtivo() != null) {
 			e.setAtivo(formulario.getAtivo());
-			if (formulario.getAtivo()) {
+			if (formulario.getAtivo().booleanValue()) {
 				e.setDesativadoEm(null);
 			} else {
 				e.setDesativadoEm(LocalDateTime.now());
 			}
 		}
+		e.setAlteradoEm(LocalDateTime.now());
 		repository.save(e);
 		return e;
 	}
