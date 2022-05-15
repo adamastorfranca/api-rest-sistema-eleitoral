@@ -21,11 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.adamastor.eleicao.model.dto.EleitorDTO;
-import br.com.adamastor.eleicao.model.form.EleitorAtualizacaoForm;
-import br.com.adamastor.eleicao.model.form.EleitorCadastroForm;
-import br.com.adamastor.eleicao.model.form.EleitorStatusForm;
-import br.com.adamastor.eleicao.model.form.VotoForm;
+import br.com.adamastor.eleicao.model.dto.EleitorRequestDTO;
+import br.com.adamastor.eleicao.model.dto.EleitorResponseDTO;
+import br.com.adamastor.eleicao.model.dto.form.VotoFormDTO;
+import br.com.adamastor.eleicao.model.entity.Eleitor;
 import br.com.adamastor.eleicao.model.service.EleitorService;
 import br.com.adamastor.eleicao.model.service.VotoService;
 
@@ -39,22 +38,33 @@ public class EleitorRest {
 	@Autowired
 	private VotoService votoService;
 	
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<EleitorResponseDTO>> buscar(
+			@RequestParam(value = "id", required = false) Long id,
+			@RequestParam(value = "nome", required = false) String nome,
+			@RequestParam(value = "cpf", required = false) String cpf,
+			@RequestParam(value = "ativo", required = false) Boolean ativo) {
+		List<Eleitor> resultado = service.buscar(id, nome, cpf, ativo);
+
+		return new ResponseEntity<>(EleitorResponseDTO.converter(resultado), HttpStatus.OK);
+	}
+	
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<EleitorDTO> cadastrar(@RequestBody @Valid EleitorCadastroForm form) {
-		EleitorDTO dto = service.cadastrar(form);
-		if(dto == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	public @ResponseBody ResponseEntity<EleitorResponseDTO> cadastrar(@RequestBody EleitorRequestDTO formulario) {
+		Eleitor e = service.cadastrar(formulario);
+		if(e == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(dto, HttpStatus.OK);
+		return new ResponseEntity<>(new EleitorResponseDTO(e), HttpStatus.OK);
 	}
 	
 	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<EleitorDTO> atualizar(@RequestBody @Valid EleitorAtualizacaoForm form) {
-		EleitorDTO dto = service.atualizar(form);
-		if(dto == null) {
+	public @ResponseBody ResponseEntity<EleitorResponseDTO> atualizar(@PathVariable Long id, @RequestBody EleitorRequestDTO formulario) {
+		Eleitor e = service.atualizar(id, formulario);
+		if(e == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(dto, HttpStatus.OK);		
+		return new ResponseEntity<>(new EleitorResponseDTO(e), HttpStatus.OK);		
 	}
 	
 	@DeleteMapping(value = "/{id}")
@@ -63,72 +73,9 @@ public class EleitorRest {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<EleitorDTO>> listarTodos() {
-		List<EleitorDTO> listaDto = service.listarTodos();
-		if(listaDto.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(listaDto, HttpStatus.OK);
-	}
-
-	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<EleitorDTO> buscarPorId(@PathVariable Long id) {
-		EleitorDTO dto = service.buscarPorId(id);
-		if(dto == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(dto, HttpStatus.OK);
-	}
-
-	@GetMapping(value = "/buscar-por-cpf/{cpf}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<EleitorDTO> buscarPorCpf(@PathVariable String cpf) {
-		EleitorDTO dto = service.buscarPorCpf(cpf);
-		if(dto == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(dto, HttpStatus.OK);
-	}
-	
-	@GetMapping(value = "/buscar-por-nome/{nome}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<EleitorDTO>> buscarPorNome(@PathVariable String nome) {
-		List<EleitorDTO> listaDtos = service.buscarPorNome(nome);
-		if(listaDtos.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(listaDtos, HttpStatus.OK);
-	}
-	
-	@PutMapping(value = "/alterar-status", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<EleitorDTO> alterarStatus(@RequestBody @Valid EleitorStatusForm form) {
-		EleitorDTO dto = service.alterarStatus(form);
-		if(dto == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(dto, HttpStatus.OK);
-	}
-	
-	@GetMapping(value = "/ativos", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<EleitorDTO>> listarAtivos() {
-		List<EleitorDTO> listaDtos = service.listarAtivos();
-		if(listaDtos.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(listaDtos, HttpStatus.OK);
-	}
-	
-	@GetMapping(value = "/inativos", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<EleitorDTO>> listarInativos() {
-		List<EleitorDTO> listaDtos = service.listarInativos();
-		if(listaDtos.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(listaDtos, HttpStatus.OK);
-	}
-	
 	@PostMapping(value = "/votar", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> votar(@RequestBody @Valid VotoForm form) {
-		votoService.votar(form);
+	public ResponseEntity<Void> votar(@RequestBody @Valid VotoFormDTO voto) {
+		votoService.votar(voto);
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

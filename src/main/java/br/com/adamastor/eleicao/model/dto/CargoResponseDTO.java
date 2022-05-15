@@ -9,7 +9,7 @@ import br.com.adamastor.eleicao.model.entity.Cargo;
 import lombok.Data;
 
 @Data
-public class CargoDTO implements Serializable {
+public class CargoResponseDTO implements Serializable {
 
 	private static final long serialVersionUID = -7552168425411443299L;
 
@@ -25,7 +25,7 @@ public class CargoDTO implements Serializable {
 	
 	private Boolean ativo;
 	
-	public CargoDTO(Cargo cargo) {
+	public CargoResponseDTO(Cargo cargo) {
 		this.id = cargo.getId();
 		this.nome = cargo.getNome();
 		this.criadoEm = cargo.getCriadoEm();
@@ -34,7 +34,7 @@ public class CargoDTO implements Serializable {
 		this.ativo = cargo.isAtivo();
 	}
 	
-	public static List<CargoDTO> converter(List<Cargo> cargos){
-		return cargos.stream().map(CargoDTO::new).collect(Collectors.toList());
+	public static List<CargoResponseDTO> converter(List<Cargo> cargos){
+		return cargos.stream().map(CargoResponseDTO::new).collect(Collectors.toList());
 	}
 }

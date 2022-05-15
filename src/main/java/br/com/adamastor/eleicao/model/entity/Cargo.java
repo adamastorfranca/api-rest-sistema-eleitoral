@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import lombok.Data;
 
@@ -25,6 +26,7 @@ public class Cargo implements Serializable {
 	private Long id;
 	
 	@Column(name = "DS_NOME", unique = true, nullable = false, length = 50)
+	@Size(min = 5, max = 50)
 	private String nome;
 	
 	@Column(name = "DT_CRIACAO", nullable = false)

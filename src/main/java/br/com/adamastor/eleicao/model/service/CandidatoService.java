@@ -12,17 +12,16 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import br.com.adamastor.eleicao.model.dto.CandidatoDTO;
+import br.com.adamastor.eleicao.model.dto.CandidatoResponseDTO;
+import br.com.adamastor.eleicao.model.dto.EleitorRequestDTO;
+import br.com.adamastor.eleicao.model.dto.RelatorioVotacaoDTO;
 import br.com.adamastor.eleicao.model.entity.Candidato;
 import br.com.adamastor.eleicao.model.exception.AplicacaoException;
-import br.com.adamastor.eleicao.model.form.CandidatoAtualizacaoForm;
-import br.com.adamastor.eleicao.model.form.CandidatoCadastroForm;
-import br.com.adamastor.eleicao.model.form.CandidatoStatusForm;
-import br.com.adamastor.eleicao.model.form.EleitorCadastroForm;
+import br.com.adamastor.eleicao.model.dto.form.CandidatoAtualizacaoForm;
+import br.com.adamastor.eleicao.model.dto.form.CandidatoCadastroForm;
 import br.com.adamastor.eleicao.model.repository.CandidatoRepository;
 
 @Service
-@Transactional(rollbackOn = AplicacaoException.class)
 public class CandidatoService {
 
 	@Autowired
@@ -36,7 +35,8 @@ public class CandidatoService {
 	private VotoService votoService;
 
 	@CacheEvict(value = "listaDeCandidatos", allEntries = true)
-	public CandidatoDTO cadastrar(CandidatoCadastroForm form) {
+	@Transactional(rollbackOn = AplicacaoException.class)
+	public CandidatoResponseDTO cadastrar(CandidatoCadastroForm form) {
 		Optional<Candidato> resultado = repository.findByCpf(form.getCpf());
 		if (resultado.isPresent()) {
 			throw new AplicacaoException("CPF já está cadastrado");
@@ -49,11 +49,12 @@ public class CandidatoService {
 		c.setCargo(cargoService.buscarCargo(form.getIdCargo()));
 		repository.save(c);
 		cadastrarComoEleitor(form);
-		return new CandidatoDTO(c);
+		return new CandidatoResponseDTO(c);
 	}	
 
 	@CacheEvict(value = "listaDeCandidatos", allEntries = true)
-	public CandidatoDTO atualizar(CandidatoAtualizacaoForm form) {
+	@Transactional(rollbackOn = AplicacaoException.class)
+	public CandidatoResponseDTO atualizar(CandidatoAtualizacaoForm form) {
 		Optional<Candidato> resultado = repository.findById(form.getId());
 		if (!resultado.isPresent()) {
 			return null;
@@ -78,7 +79,7 @@ public class CandidatoService {
 			c.setDesativadoEm(null);
 		}
 		repository.save(c);
-		return new CandidatoDTO(c);
+		return new CandidatoResponseDTO(c);
 	}
 
 	@CacheEvict(value = "listaDeCandidatos", allEntries = true)
@@ -95,67 +96,19 @@ public class CandidatoService {
 	}
 
 	@Cacheable(value = "listaDeCandidatos")
-	public List<CandidatoDTO> listarTodos() {
-		return CandidatoDTO.converter(repository.findAll());
+	public List<CandidatoResponseDTO> listarTodos() {
+		return CandidatoResponseDTO.converter(repository.findAll());
 	}
 
-	public CandidatoDTO buscarPorId(Long id) {
+	public CandidatoResponseDTO buscarPorId(Long id) {
 		Optional<Candidato> resultado = repository.findById(id);
 		if (resultado.isPresent()) {
-			return new CandidatoDTO(resultado.get());
+			return new CandidatoResponseDTO(resultado.get());
 		}
 		return null;
 	}
 
-	public CandidatoDTO buscarPorCpf(String cpf) {
-		Optional<Candidato> resultado = repository.findByCpf(cpf);
-		if (resultado.isPresent()) {
-			return new CandidatoDTO(resultado.get());
-		}
-		return null;
-	}
-
-	public List<CandidatoDTO> buscarPorNome(String nome) {
-		return CandidatoDTO.converter(repository.findByNome(nome.toUpperCase()));
-	}
-
-	public CandidatoDTO buscarPorNumero(Integer numeroCandidato) {
-		Optional<Candidato> resultado = repository.findByNumero(numeroCandidato);
-		if (resultado.isPresent()) {
-			return new CandidatoDTO(resultado.get());
-		}
-		return null;
-	}
-
-	public CandidatoDTO alterarStatus(CandidatoStatusForm form) {
-		Optional<Candidato> resultado = repository.findById(form.getId());
-		if (!resultado.isPresent()) {
-			return null;
-		}
-		Candidato c = resultado.get();
-		if (form.isAtivo()) {
-			c.setAtivo(form.isAtivo());
-			c.setAlteradoEm(LocalDateTime.now());
-			c.setDesativadoEm(null);
-		}
-		if (!form.isAtivo()) {
-			c.setAtivo(form.isAtivo());
-			c.setAlteradoEm(LocalDateTime.now());
-			c.setDesativadoEm(LocalDateTime.now());
-		}
-		repository.save(c);
-		return new CandidatoDTO(c);
-	}
-
-	public List<CandidatoDTO> listarAtivos() {
-		return CandidatoDTO.converter(repository.findByAtivoTrue());
-	}
-
-	public List<CandidatoDTO> listarInativos() {
-		return CandidatoDTO.converter(repository.findByAtivoFalse());
-	}
-
-	public Candidato buscarCandidato(Long id) {
+	public Candidato buscarCandidatoParaSerVotado(Long id) {
 		Optional<Candidato> resultado = repository.findById(id);
 		if (!resultado.isPresent()) {
 			return null;
@@ -168,7 +121,7 @@ public class CandidatoService {
 	}
 
 	private void cadastrarComoEleitor(CandidatoCadastroForm form) {
-		EleitorCadastroForm formEleitor = new EleitorCadastroForm();
+		EleitorRequestDTO formEleitor = new EleitorRequestDTO();
 		formEleitor.setNome(form.getNome());
 		formEleitor.setCpf(form.getCpf());
 		formEleitor.setAtivo(form.isAtivo());

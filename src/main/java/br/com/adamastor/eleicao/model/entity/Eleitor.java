@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -27,6 +28,7 @@ public class Eleitor implements Serializable {
 	private Long id;
 	
 	@Column(name = "DS_NOME", nullable = false, length = 100)
+	@Size(min = 10, max = 100)
 	private String nome;
 	
 	@CPF

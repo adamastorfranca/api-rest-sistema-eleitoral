@@ -7,13 +7,13 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.adamastor.eleicao.model.dto.form.VotoFormDTO;
 import br.com.adamastor.eleicao.model.entity.Candidato;
 import br.com.adamastor.eleicao.model.entity.Cargo;
 import br.com.adamastor.eleicao.model.entity.Eleitor;
 import br.com.adamastor.eleicao.model.entity.Voto;
 import br.com.adamastor.eleicao.model.entity.VotoId;
 import br.com.adamastor.eleicao.model.exception.AplicacaoException;
-import br.com.adamastor.eleicao.model.form.VotoForm;
 import br.com.adamastor.eleicao.model.repository.VotoRepository;
 
 @Service
@@ -29,12 +29,12 @@ public class VotoService {
 	private CargoService cargoService;
 	
 	@Transactional(rollbackOn = AplicacaoException.class)
-	public void votar(VotoForm form) {
+	public void votar(VotoFormDTO voto) {
 		Voto v = new Voto();
 		VotoId vId = new VotoId();
-		Cargo cargo = cargoService.buscarCargo(form.getIdCargo());
-		Candidato c = candidatoService.buscarCandidato(form.getIdCandidato());	
-		vId.setEleitor(eleitorService.buscarEleitor(form.getIdEleitor()));	
+		Cargo cargo = cargoService.buscarCargoDaVotacao(voto.getIdCargo());
+		Candidato c = candidatoService.buscarCandidatoParaSerVotado(voto.getIdCandidato());	
+		vId.setEleitor(eleitorService.buscarEleitorParaVotar(voto.getIdEleitor()));	
 		vId.setCargo(cargo);
 		v.setId(vId);
 		v.setData(LocalDateTime.now());
@@ -52,6 +52,10 @@ public class VotoService {
 	
 	public boolean verificarSeCandidatoRecebeuVoto(Candidato candidato) {
 		return repository.existsByCandidato(candidato);
+	}
+
+	public boolean verificarSeCargoEstaNaEleicao(Cargo cargo) {
+		return repository.existsByIdCargo(cargo);
 	}
 
 }

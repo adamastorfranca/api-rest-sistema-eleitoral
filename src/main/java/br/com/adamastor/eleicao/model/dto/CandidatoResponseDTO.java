@@ -9,7 +9,7 @@ import br.com.adamastor.eleicao.model.entity.Candidato;
 import lombok.Data;
 
 @Data
-public class CandidatoDTO implements Serializable {
+public class CandidatoResponseDTO implements Serializable {
 
 	private static final long serialVersionUID = -9007257472946893386L;
 
@@ -33,7 +33,7 @@ public class CandidatoDTO implements Serializable {
 
 	private boolean ativo;
 	
-	public CandidatoDTO(Candidato candidato) {
+	public CandidatoResponseDTO(Candidato candidato) {
 		this.id = candidato.getId();
 		this.nome = candidato.getNome();
 		this.cpf = candidato.getCpf();
@@ -46,7 +46,7 @@ public class CandidatoDTO implements Serializable {
 		this.ativo = candidato.isAtivo();
 	}
 	
-	public static List<CandidatoDTO> converter(List<Candidato> candidatos){
-		return candidatos.stream().map(CandidatoDTO::new).collect(Collectors.toList());
+	public static List<CandidatoResponseDTO> converter(List<Candidato> candidatos){
+		return candidatos.stream().map(CandidatoResponseDTO::new).collect(Collectors.toList());
 	}
 }

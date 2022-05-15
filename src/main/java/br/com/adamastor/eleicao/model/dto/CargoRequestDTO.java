@@ -1,21 +1,16 @@
-package br.com.adamastor.eleicao.model.form;
+package br.com.adamastor.eleicao.model.dto;
 
 import java.time.LocalDateTime;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 import br.com.adamastor.eleicao.model.entity.Cargo;
 import lombok.Data;
 
 @Data
-public class CargoCadastroForm {
+public class CargoRequestDTO {
 
-	@NotBlank
-	@Size(min = 4, max = 50)
 	private String nome;
 	
-	private boolean ativo;
+	private Boolean ativo;
 	
 	public Cargo gerarCargo() {
 		Cargo c = new Cargo();

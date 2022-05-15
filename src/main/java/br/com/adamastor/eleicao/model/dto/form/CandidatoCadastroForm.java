@@ -1,4 +1,4 @@
-package br.com.adamastor.eleicao.model.form;
+package br.com.adamastor.eleicao.model.dto.form;
 
 import java.time.LocalDateTime;
 
