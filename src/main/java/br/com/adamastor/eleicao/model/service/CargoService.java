@@ -4,7 +4,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import br.com.adamastor.eleicao.model.dto.CargoDTO;
@@ -16,11 +20,13 @@ import br.com.adamastor.eleicao.model.form.CargoStatusForm;
 import br.com.adamastor.eleicao.model.repository.CargoRepository;
 
 @Service
+@Transactional(rollbackOn = AplicacaoException.class)
 public class CargoService {
 
 	@Autowired
 	private CargoRepository repository;
 
+	@CacheEvict(value = "listaDeCargos", allEntries = true)
 	public CargoDTO cadastrar(CargoCadastroForm form) {
 		Optional<Cargo> resultado = repository.findByNome(form.getNome());
 		if (resultado.isPresent()) {
@@ -30,27 +36,8 @@ public class CargoService {
 		repository.save(c);
 		return new CargoDTO(c);
 	}
-
-	public List<CargoDTO> listarTodos() {
-		return CargoDTO.converter(repository.findAll());
-	}
-
-	public CargoDTO buscarPorId(Long id) {
-		Optional<Cargo> resultado = repository.findById(id);
-		if (resultado.isPresent()) {
-			return new CargoDTO(resultado.get());
-		}
-		return null;
-	}
-
-	public CargoDTO buscarPorNome(String nome) {
-		Optional<Cargo> resultado = repository.findByNome(nome.toUpperCase());
-		if (resultado.isPresent()) {
-			return new CargoDTO(resultado.get());
-		}
-		return null;
-	}
-
+	
+	@CacheEvict(value = "listaDeCargos", allEntries = true)
 	public CargoDTO atualizar(CargoAtualizacaoForm form) {
 		Optional<Cargo> resultado = repository.findById(form.getId());
 		if (!resultado.isPresent()) {
@@ -74,6 +61,7 @@ public class CargoService {
 		return new CargoDTO(c);
 	}
 
+	@CacheEvict(value = "listaDeCargos", allEntries = true)
 	public void deletar(Long id) {	
 		Optional<Cargo> resultado = repository.findById(id);
 		if (!resultado.isPresent()) {
@@ -81,6 +69,27 @@ public class CargoService {
 		}
 		Cargo c = resultado.get();
 		repository.delete(c);
+	}
+
+	@Cacheable(value = "listaDeCargos")
+	public List<CargoDTO> listarTodos() {
+		return CargoDTO.converter(repository.findAll());
+	}
+
+	public CargoDTO buscarPorId(Long id) {
+		Optional<Cargo> resultado = repository.findById(id);
+		if (resultado.isPresent()) {
+			return new CargoDTO(resultado.get());
+		}
+		return null;
+	}
+
+	public CargoDTO buscarPorNome(String nome) {
+		Optional<Cargo> resultado = repository.findByNome(nome.toUpperCase());
+		if (resultado.isPresent()) {
+			return new CargoDTO(resultado.get());
+		}
+		return null;
 	}
 
 	public CargoDTO alterarStatus(CargoStatusForm form) {
@@ -109,5 +118,17 @@ public class CargoService {
 
 	public List<CargoDTO> listarInativos() {
 		return CargoDTO.converter(repository.findByAtivoFalse());
+	}
+	
+	public Cargo buscarCargo(Long id) {
+		Optional<Cargo> resultado = repository.findById(id);
+		if (!resultado.isPresent()) {
+			throw new AplicacaoException("ID informado não está cadastrado para nenhum cargo");
+		}
+		Cargo c = resultado.get();
+		if(!c.isAtivo()) {
+			throw new AplicacaoException("Este cargo não pode ser atribuido ao candidato");
+		}
+		return c;
 	}
 }

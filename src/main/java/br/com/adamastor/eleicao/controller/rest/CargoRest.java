@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +28,7 @@ import br.com.adamastor.eleicao.model.service.CargoService;
 
 @RestController
 @RequestMapping("rest/cargos")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class CargoRest {
 
 	@Autowired
@@ -36,33 +37,6 @@ public class CargoRest {
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<CargoDTO> cadastrar(@RequestBody @Valid CargoCadastroForm form) {
 		CargoDTO dto = service.cadastrar(form);
-		if(dto == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(dto, HttpStatus.OK);
-	}
-
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<CargoDTO>> listarTodos() {
-		List<CargoDTO> listaDtos = service.listarTodos();
-		if(listaDtos.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(listaDtos, HttpStatus.OK);
-	}
-
-	@GetMapping(value = "/{cargoId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<CargoDTO> buscarPorId(@PathVariable Long cargoId) {
-		CargoDTO dto = service.buscarPorId(cargoId);
-		if(dto == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(dto, HttpStatus.OK);
-	}
-
-	@GetMapping(value = "/buscar/{nome}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<CargoDTO> buscarPorNome(@PathVariable String nome) {
-		CargoDTO dto = service.buscarPorNome(nome);
 		if(dto == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -78,10 +52,37 @@ public class CargoRest {
 		return new ResponseEntity<>(dto, HttpStatus.OK);		
 	}
 	
-	@DeleteMapping(value = "/{cargoId}")
-	public ResponseEntity<Void> deletar(@PathVariable Long cargoId) {
-		service.deletar(cargoId);
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> deletar(@PathVariable Long id) {
+		service.deletar(id);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<CargoDTO>> listarTodos() {
+		List<CargoDTO> listaDtos = service.listarTodos();
+		if(listaDtos.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(listaDtos, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<CargoDTO> buscarPorId(@PathVariable Long id) {
+		CargoDTO dto = service.buscarPorId(id);
+		if(dto == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(dto, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/buscar/{nome}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<CargoDTO> buscarPorNome(@PathVariable String nome) {
+		CargoDTO dto = service.buscarPorNome(nome);
+		if(dto == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 
 	@PutMapping(value = "/alterar-status", produces = MediaType.APPLICATION_JSON_VALUE)

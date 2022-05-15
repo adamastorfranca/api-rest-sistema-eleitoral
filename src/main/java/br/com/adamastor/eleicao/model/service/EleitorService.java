@@ -4,7 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import br.com.adamastor.eleicao.model.dto.EleitorDTO;
@@ -16,12 +21,16 @@ import br.com.adamastor.eleicao.model.form.EleitorStatusForm;
 import br.com.adamastor.eleicao.model.repository.EleitorRepository;
 
 @Service
-
+@Transactional(rollbackOn = AplicacaoException.class)
 public class EleitorService {
 	
 	@Autowired
 	private EleitorRepository repository;
+	@Autowired
+	@Lazy
+	private VotoService votoService;
 	
+	@CacheEvict(value = "listaDeEleitores", allEntries = true)
 	public EleitorDTO cadastrar(EleitorCadastroForm form) {
 		Optional<Eleitor> resultado = repository.findByCpf(form.getCpf());
 		if (resultado.isPresent()) {
@@ -32,6 +41,38 @@ public class EleitorService {
 		return new EleitorDTO(e);
 	}
 	
+	@CacheEvict(value = "listaDeEleitores", allEntries = true)
+	public EleitorDTO atualizar(EleitorAtualizacaoForm form) {
+		Optional<Eleitor> resultado = repository.findById(form.getId());
+		if (!resultado.isPresent()) {
+			return null;
+		}
+		Eleitor e = resultado.get();
+		e.setNome(form.getNome().toUpperCase());
+		e.setAlteradoEm(LocalDateTime.now());
+		e.setAtivo(form.isAtivo());
+		e.setDesativadoEm(null);
+		if (!form.isAtivo()) {
+			e.setDesativadoEm(LocalDateTime.now());
+		}
+		repository.save(e);
+		return new EleitorDTO(e);
+	}
+	
+	@CacheEvict(value = "listaDeEleitores", allEntries = true)
+	public void deletar(Long id) {	
+		Optional<Eleitor> resultado = repository.findById(id);
+		if (!resultado.isPresent()) {
+			throw new AplicacaoException("ID informado não está cadastrado");
+		}
+		Eleitor e = resultado.get();
+		if(votoService.verificarSeEleitorVotou(e)) {
+			throw new AplicacaoException("Eleitor não pode ser deletado pois já votou");
+		}
+		repository.delete(e);
+	}
+
+	@Cacheable(value = "listaDeEleitores")
 	public List<EleitorDTO> listarTodos() {
 		return EleitorDTO.converter(repository.findAll());
 	}
@@ -56,39 +97,6 @@ public class EleitorService {
 		return EleitorDTO.converter(repository.findByNome(nome.toUpperCase()));
 	}
 
-	public EleitorDTO atualizar(EleitorAtualizacaoForm form) {
-		Optional<Eleitor> resultado = repository.findById(form.getId());
-		if (!resultado.isPresent()) {
-			return null;
-		}
-		Eleitor e = resultado.get();
-		e.setNome(form.getNome().toUpperCase());
-		e.setAlteradoEm(LocalDateTime.now());
-		e.setAtivo(form.isAtivo());
-		e.setDesativadoEm(null);
-		if (!form.isAtivo()) {
-			e.setDesativadoEm(LocalDateTime.now());
-		}
-		repository.save(e);
-		return new EleitorDTO(e);
-	}
-	
-	public void deletarPorId(Long id) {	
-		Optional<Eleitor> resultado = repository.findById(id);
-		if (!resultado.isPresent()) {
-			throw new AplicacaoException("ID informado não está cadastrado");
-		}
-		repository.delete(resultado.get());
-	}
-
-	public void deletarPorCpf(String cpf) {	
-		Optional<Eleitor> resultado = repository.findByCpf(cpf);
-		if (!resultado.isPresent()) {
-			throw new AplicacaoException("CPF informado não está cadastrado");
-		}
-		repository.delete(resultado.get());
-	}
-	
 	public EleitorDTO alterarStatus(EleitorStatusForm form) {
 		Optional<Eleitor> resultado = repository.findById(form.getId());
 		if (!resultado.isPresent()) {
@@ -124,5 +132,17 @@ public class EleitorService {
 		}
 		Eleitor e = form.gerarEleitor();
 		repository.save(e);
+	}
+	
+	public Eleitor buscarEleitor(Long id) {
+		Optional<Eleitor> resultado = repository.findById(id);
+		if (!resultado.isPresent()) {
+			throw new AplicacaoException("ID informado não está cadastrado para nenhum eleitor");
+		}
+		Eleitor e = resultado.get();
+		if(!e.isAtivo()) {
+			throw new AplicacaoException("Este eleitor não já apto à votar");
+		}
+		return e;
 	}
 }

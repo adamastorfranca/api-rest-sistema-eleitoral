@@ -22,5 +22,8 @@ public class CandidatoAtualizacaoForm {
 	@NotBlank
 	private String legenda;
 	
+	@NotNull
+	private Long idCargo;
+	
 	private boolean ativo;
 }

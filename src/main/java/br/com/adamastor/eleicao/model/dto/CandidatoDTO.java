@@ -1,5 +1,6 @@
 package br.com.adamastor.eleicao.model.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,7 +9,9 @@ import br.com.adamastor.eleicao.model.entity.Candidato;
 import lombok.Data;
 
 @Data
-public class CandidatoDTO {
+public class CandidatoDTO implements Serializable {
+
+	private static final long serialVersionUID = -9007257472946893386L;
 
 	private Long id;
 
@@ -19,6 +22,8 @@ public class CandidatoDTO {
 	private Integer numero;
 	
 	private String legenda;
+	
+	private String nomeCargo;
 
 	private LocalDateTime criadoEm;
 
@@ -34,6 +39,7 @@ public class CandidatoDTO {
 		this.cpf = candidato.getCpf();
 		this.numero = candidato.getNumero();
 		this.legenda = candidato.getLegenda();
+		this.nomeCargo = candidato.getCargo().getNome();
 		this.criadoEm = candidato.getCriadoEm();
 		this.alteradoEm = candidato.getAlteradoEm();
 		this.desativadoEm = candidato.getDesativadoEm();

@@ -16,4 +16,5 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>{
 	List<Candidato> findByNome(String nome);
 	List<Candidato> findByAtivoTrue();
 	List<Candidato> findByAtivoFalse();
+	
 }

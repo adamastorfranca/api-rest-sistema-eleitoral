@@ -15,10 +15,10 @@ public class VotoId implements Serializable {
 	private static final long serialVersionUID = -8625722725569288786L;
 
 	@ManyToOne
-	@JoinColumn(name = "FK_ELEITOR", insertable = false, updatable = false)
+	@JoinColumn(name = "FK_ELEITOR", updatable = false, nullable = false)
 	private Eleitor eleitor;
-	
+
 	@ManyToOne
-	@JoinColumn(name = "FK_CANDIDATO", insertable = false, updatable = false)
-	private Candidato candidato;
+	@JoinColumn(name = "FK_CARGO", updatable = false, nullable = false)
+	private Cargo cargo;
 }

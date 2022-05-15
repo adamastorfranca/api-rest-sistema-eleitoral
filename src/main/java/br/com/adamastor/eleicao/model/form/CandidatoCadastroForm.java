@@ -29,6 +29,9 @@ public class CandidatoCadastroForm {
 	@Size(min = 2, max = 100)
 	private String legenda;
 	
+	@NotNull
+	private Long idCargo;
+	
 	private boolean ativo;
 	
 	public Candidato gerarCandidato() {
@@ -36,7 +39,7 @@ public class CandidatoCadastroForm {
 		c.setNome(nome.toUpperCase());
 		c.setCpf(cpf);
 		c.setNumero(numero);
-		c.setLegenda(legenda);
+		c.setLegenda(legenda.toUpperCase());
 		c.setAtivo(ativo);
 		c.setCriadoEm(LocalDateTime.now());
 		return c;

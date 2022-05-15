@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +28,7 @@ import br.com.adamastor.eleicao.model.service.CandidatoService;
 
 @RestController
 @RequestMapping("rest/candidatos")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class CandidatoRest {
 
 	@Autowired
@@ -41,6 +42,21 @@ public class CandidatoRest {
 		}
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
+	
+	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<CandidatoDTO> atualizar(@RequestBody @Valid CandidatoAtualizacaoForm form) {
+		CandidatoDTO dto = service.atualizar(form);
+		if(dto == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(dto, HttpStatus.OK);		
+	}
+	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> deletar(@PathVariable Long id) {
+		service.deletar(id);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 		
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<CandidatoDTO>> listarTodos() {
@@ -51,9 +67,9 @@ public class CandidatoRest {
 		return new ResponseEntity<>(listaDto, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/{candidatoId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<CandidatoDTO> buscarPorId(@PathVariable Long candidatoId) {
-		CandidatoDTO dto = service.buscarPorId(candidatoId);
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<CandidatoDTO> buscarPorId(@PathVariable Long id) {
+		CandidatoDTO dto = service.buscarPorId(id);
 		if(dto == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -78,42 +94,15 @@ public class CandidatoRest {
 		return new ResponseEntity<>(listaDtos, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/buscar-por-numero/{numeroCandidato}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<CandidatoDTO> buscarPorCpf(@PathVariable Integer numeroCandidato) {
-		CandidatoDTO dto = service.buscarPorNumero(numeroCandidato);
+	@GetMapping(value = "/buscar-por-numero/{numero}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<CandidatoDTO> buscarPorCpf(@PathVariable Integer numero) {
+		CandidatoDTO dto = service.buscarPorNumero(numero);
 		if(dto == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
-	
-	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<CandidatoDTO> atualizar(@RequestBody @Valid CandidatoAtualizacaoForm form) {
-		CandidatoDTO dto = service.atualizar(form);
-		if(dto == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(dto, HttpStatus.OK);		
-	}
-	
-	@DeleteMapping(value = "/{eleitorId}")
-	public ResponseEntity<Void> deletarPorId(@PathVariable Long eleitorId) {
-		service.deletarPorId(eleitorId);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
-	@DeleteMapping(value = "/deletar-por-cpf/{cpf}")
-	public ResponseEntity<Void> deletarPorCpf(@PathVariable String cpf) {
-		service.deletarPorCpf(cpf);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
-	@DeleteMapping(value = "/deletar-por-numero/{numeroCandidato}")
-	public ResponseEntity<Void> deletarPorNumero(@PathVariable Integer numeroCandidato) {
-		service.deletarPorNumero(numeroCandidato);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
+
 	@PutMapping(value = "/alterar-status", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<CandidatoDTO> alterarStatus(@RequestBody @Valid CandidatoStatusForm form) {
 		CandidatoDTO dto = service.alterarStatus(form);
