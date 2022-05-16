@@ -1,0 +1,45 @@
+<div id="total">
+  <h5>Cadastrar cargo</h5>
+
+  <div id="form">
+    <form [formGroup]="formEleitorCadastro" (ngSubmit)="cadastrar()">
+      <fieldset>
+        <label for="nome" class="form-label">Nome</label>
+        <input id="nome" class="form-control" formControlName="nome"/>
+
+        <div
+          *ngIf="
+            formEleitorCadastro.get('nome')?.errors?.['required'] &&
+            formEleitorCadastro.get('nome')?.touched"
+            class="form-text text-danger">
+            Campo obrigatório
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label for="cpf" class="form-label">CPF</label>
+        <input id="cpf" class="form-control" formControlName="cpf"/>
+
+        <div
+          *ngIf="
+            formEleitorCadastro.get('cpf')?.errors?.['required'] &&
+            formEleitorCadastro.get('cpf')?.touched"
+            class="form-text text-danger">
+            Campo obrigatório
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label for="ativo" class="form-label">Status</label>
+        <select class="form-select" formControlName="ativo">
+          <option value=true>Ativo</option>
+          <option value=false>Inativo</option>
+        </select>
+      </fieldset>
+
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-outline-light" [disabled]="formEleitorCadastro.invalid">Cadastrar</button>
+      </div>
+    </form>
+  </div>
+</div>

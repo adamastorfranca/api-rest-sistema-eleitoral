@@ -1,4 +1,4 @@
 export interface ICargoCadastro {
-  numero: string;
+  nome: string;
   ativo: boolean;
 }

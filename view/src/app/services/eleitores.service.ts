@@ -2,21 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-import { ICargoCadastro } from '../interfaces/cargo-cadastro';
+import { IEleitorCadastro } from '../interfaces/eleitor-cadastro';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CargosService {
+export class EleitoresService {
 
   api = environment.api;
-  endpoint = 'cargos';
+  endpoint = 'eleitores';
 
   constructor(
     private http: HttpClient
   ) { }
 
-  cadastrar(cargo: ICargoCadastro){
-    return this.http.post(`${this.api}/${this.endpoint}/`, cargo);
+  cadastrar(eleitor: IEleitorCadastro){
+    return this.http.post(`${this.api}/${this.endpoint}/`, eleitor);
   }
 }
