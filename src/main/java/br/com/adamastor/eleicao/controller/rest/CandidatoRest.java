@@ -21,8 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.adamastor.eleicao.model.dto.CandidatoRequestDTO;
 import br.com.adamastor.eleicao.model.dto.CandidatoResponseDTO;
+import br.com.adamastor.eleicao.model.dto.RelatorioGeralVotacaoDTO;
+import br.com.adamastor.eleicao.model.dto.RelatorioIndividualVotacaoDTO;
 import br.com.adamastor.eleicao.model.entity.Candidato;
 import br.com.adamastor.eleicao.model.service.CandidatoService;
+import br.com.adamastor.eleicao.model.service.VotoService;
 
 @RestController
 @RequestMapping("rest/candidatos")
@@ -31,6 +34,8 @@ public class CandidatoRest {
 
 	@Autowired
 	private CandidatoService service;
+	@Autowired
+	private VotoService votoService; 
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<CandidatoResponseDTO>> buscar(
@@ -68,5 +73,15 @@ public class CandidatoRest {
 	public ResponseEntity<Void> deletar(@PathVariable Long id) {
 		service.deletar(id);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "relatorio", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<RelatorioGeralVotacaoDTO>> relatorioGeral() {
+		return new ResponseEntity<>(votoService.gerarRelatorioGeral(), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "relatorio/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<RelatorioIndividualVotacaoDTO> relatorioIndividual(@PathVariable Long id) {
+		return new ResponseEntity<>(votoService.gerarRelatorioIndividual(id), HttpStatus.OK);
 	}
 }

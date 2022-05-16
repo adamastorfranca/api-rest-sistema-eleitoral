@@ -9,7 +9,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.adamastor.eleicao.model.dto.RelatorioVotacaoDTO;
+import br.com.adamastor.eleicao.model.dto.RelatorioGeralVotacaoDTO;
+import br.com.adamastor.eleicao.model.dto.RelatorioIndividualVotacaoDTO;
 import br.com.adamastor.eleicao.model.dto.VotoRequestDTO;
 import br.com.adamastor.eleicao.model.entity.Candidato;
 import br.com.adamastor.eleicao.model.entity.Cargo;
@@ -32,54 +33,61 @@ public class VotoService {
 	private CargoService cargoService;
 
 	@Transactional(rollbackOn = AplicacaoException.class)
-	public void votar(VotoRequestDTO voto) {
+	public void votar(Long idEleitor, VotoRequestDTO voto) {
 		Voto v = new Voto();
 		VotoId vId = new VotoId();
 		Cargo cargo = cargoService.buscarCargoDaVotacao(voto.getIdCargo());
 		Candidato c = candidatoService.buscarCandidatoParaSerVotado(voto.getIdCandidato());
-		vId.setEleitor(eleitorService.buscarEleitorParaVotar(voto.getIdEleitor()));
+		vId.setEleitor(eleitorService.buscarEleitorParaVotar(idEleitor));
 		vId.setCargo(cargo);
 		v.setId(vId);
 		v.setData(LocalDateTime.now());
 		if (c != null && c.getCargo().equals(cargo)) {
 			v.setCandidato(c);
 		} else {
-			v.setCandidato(null);
+			throw new AplicacaoException("Número do candidato inexistente");
 		}
 		repository.save(v);
 	}
 
-	public void gerarRelatorio() {
+	public List<RelatorioGeralVotacaoDTO> gerarRelatorioGeral() {
 		List<Candidato> candidatos = candidatosParticipantes();
-		List<RelatorioVotacaoDTO> vencedoresPorCargo = new ArrayList<>();		
+		List<RelatorioGeralVotacaoDTO> vencedoresPorCargo = new ArrayList<>();
+		RelatorioGeralVotacaoDTO temp;
 		for (Candidato c : candidatos) {
+			List<RelatorioGeralVotacaoDTO> listaCloneParaIterar = new ArrayList<>(vencedoresPorCargo);
 			int votosCandidato = repository.countByCandidato(c);
 			if (vencedoresPorCargo.isEmpty()) {
 				vencedoresPorCargo.add(gerarInformacoes(c, votosCandidato));
-			}	
-			for (RelatorioVotacaoDTO r : vencedoresPorCargo) {
-				if (!r.getIdCargo().equals(c.getCargo().getId())) {	
-					vencedoresPorCargo.add(gerarInformacoes(c, votosCandidato));				
+			}		
+			for (RelatorioGeralVotacaoDTO r : listaCloneParaIterar) {
+				if (!r.getIdCargo().equals(c.getCargo().getId())) {
+					temp = gerarInformacoes(c, votosCandidato);
+					if(!vencedoresPorCargo.contains(temp)) {
+						vencedoresPorCargo.add(temp);
+					}
 				}
-
-				if (r.getIdCargo().equals(c.getCargo().getId()) && r.getVotos() < votosCandidato) {
+				if (r.getIdCargo().equals(c.getCargo().getId()) && r.getVotos() < votosCandidato ) {
 					vencedoresPorCargo.remove(r);
-					vencedoresPorCargo.add(gerarInformacoes(c, votosCandidato));
+					temp = gerarInformacoes(c, votosCandidato);					
+					if(!vencedoresPorCargo.contains(temp)) {
+						vencedoresPorCargo.add(temp);
+					}
 				}
 			}
 		}
+		return vencedoresPorCargo;
 	}
 	
-	private RelatorioVotacaoDTO gerarInformacoes(Candidato c, int votos) {
-		RelatorioVotacaoDTO r = new RelatorioVotacaoDTO();
-		r.setIdCargo(c.getCargo().getId());
+	public RelatorioIndividualVotacaoDTO gerarRelatorioIndividual(Long id) {
+		Candidato c = candidatoService.buscarCandidatoParaSerVotado(id);
+		RelatorioIndividualVotacaoDTO r = new RelatorioIndividualVotacaoDTO();
+		r.setNomeCandidato(c.getNome());
 		r.setNomeCargo(c.getCargo().getNome());
-		r.setVotos(votos);
-		r.setIdCandidatoVencedor(c.getId());
-		r.setNomeCandidatoVencedor(c.getNome());
+		r.setVotos(repository.countByCandidato(c));
 		return r;
 	}
-	
+
 	private List<Candidato> candidatosParticipantes() {
 		List<Candidato> candidatos = new ArrayList<>();
 		List<Voto> votos = repository.findAll();
@@ -94,7 +102,17 @@ public class VotoService {
 		}
 		return candidatos;
 	}
-	
+
+	private RelatorioGeralVotacaoDTO gerarInformacoes(Candidato c, int votos) {
+		RelatorioGeralVotacaoDTO r = new RelatorioGeralVotacaoDTO();
+		r.setIdCargo(c.getCargo().getId());
+		r.setNomeCargo(c.getCargo().getNome());
+		r.setVotos(votos);
+		r.setIdCandidatoVencedor(c.getId());
+		r.setNomeCandidatoVencedor(c.getNome());
+		return r;
+	}
+
 	public boolean verificarSeEleitorVotou(Eleitor eleitor) {
 		return repository.existsByIdEleitor(eleitor);
 	}

@@ -3,7 +3,7 @@ package br.com.adamastor.eleicao.model.dto;
 import lombok.Data;
 
 @Data
-public class RelatorioVotacaoDTO {
+public class RelatorioGeralVotacaoDTO {
 	
 	private Long idCargo;
 	

@@ -2,8 +2,6 @@ package br.com.adamastor.eleicao.controller.rest;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -73,9 +71,9 @@ public class EleitorRest {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/votar", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> votar(@RequestBody @Valid VotoRequestDTO voto) {
-		votoService.votar(voto);
+	@PostMapping(value = "/{id}/votar", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> votar(@PathVariable Long id, @RequestBody VotoRequestDTO voto) {
+		votoService.votar(id, voto);
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
