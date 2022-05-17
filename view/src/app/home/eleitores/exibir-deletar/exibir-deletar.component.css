@@ -5,11 +5,7 @@ h5 {
   font-size: 25px;
 }
 
-table {
-  background-color: white;
-}
-
-.thead-cargos {
+.thead-eleitores {
   text-transform: uppercase;
   font-weight: bold;
 }

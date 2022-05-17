@@ -1,16 +1,16 @@
 <div class="container" id="total">
-  <h5>Cadastrar cargo</h5>
+  <h5>{{ estaEditando() ? "Edicão" : "Cadastro" }} de cargo</h5>
 
   <div id="form">
-    <form [formGroup]="formCargoCadastro" (ngSubmit)="cadastrar()">
+    <form [formGroup]="formulario" (ngSubmit)="enviar()">
       <fieldset>
         <label for="nome" class="form-label">Nome</label>
         <input id="nome" class="form-control" formControlName="nome"/>
 
         <div
           *ngIf="
-            formCargoCadastro.get('nome')?.errors?.['required'] &&
-            formCargoCadastro.get('nome')?.touched"
+            formulario.get('nome')?.errors?.['required'] &&
+            formulario.get('nome')?.touched"
             class="form-text text-danger">
             Campo obrigatório
         </div>
@@ -25,7 +25,7 @@
       </fieldset>
 
       <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-outline-light" [disabled]="formCargoCadastro.invalid">Cadastrar</button>
+        <button type="submit" class="btn btn-outline-light" [disabled]="formulario.invalid">{{ estaEditando() ? "Editar" : "Cadastrar" }}</button>
       </div>
     </form>
   </div>

@@ -5,15 +5,14 @@ h5 {
   font-size: 25px;
 }
 
-table {
-  background-color: white;
-}
-
-.thead-eleitores {
+.thead-cargos {
   text-transform: uppercase;
   font-weight: bold;
 }
 
-.btn-dark {
+.dropdown-item{
+  font-weight: bold;
+}
+#botao-confirmacao {
   margin-top: 25px;
 }

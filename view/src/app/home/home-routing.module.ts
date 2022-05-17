@@ -2,20 +2,22 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './home.component';
-import { CargoCadastrarComponent } from './cargos/cadastrar/cadastrar.component';
-import { ExibirTodosCargosComponent } from './cargos/exibir-todos/exibir-todos.component';
-import { EleitorCadastrarComponent } from './eleitores/cadastrar/cadastrar.component';
-import { ExibirTodosEleitoresComponent } from './eleitores/exibir-todos/exibir-todos.component';
+import { CargoCadastrarEditarComponent } from './cargos/cadastrar-editar/cadastrar-editar.component';
+import { CargoExibirDeletarComponent } from './cargos/exibir-deletar/exibir-deletar.component';
+import { EleitorCadastrarEitarComponent } from './eleitores/cadastrar-editar/cadastrar-editar.component';
+import { EleitorExibirDeletarComponent } from './eleitores/exibir-deletar/exibir-deletar.component';
 
 const routes: Routes = [
   {
     path:'', component: HomeComponent,
     children: [
-      { path: 'cargos', component: ExibirTodosCargosComponent },
-      { path: 'cargo-cadastro', component: CargoCadastrarComponent },
+      { path: 'cargos', component: CargoExibirDeletarComponent },
+      { path: 'cargos/cadastro', component: CargoCadastrarEditarComponent },
+      { path: 'cargos/editar/:id', component: CargoCadastrarEditarComponent },
 
-      { path: 'eleitores', component: ExibirTodosEleitoresComponent },
-      { path: 'eleitor-cadastro', component: EleitorCadastrarComponent },
+      { path: 'eleitores', component: EleitorExibirDeletarComponent },
+      { path: 'eleitores/cadastro', component: EleitorCadastrarEitarComponent },
+      { path: 'eleitores/editar/:id', component: EleitorCadastrarEitarComponent },
     ],
   },
 ];

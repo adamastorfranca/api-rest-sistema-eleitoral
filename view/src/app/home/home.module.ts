@@ -2,18 +2,25 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CargoCadastrarComponent } from './cargos/cadastrar/cadastrar.component';
+
 import { HomeRoutingModule } from './home-routing.module';
-import { EleitorCadastrarComponent } from './eleitores/cadastrar/cadastrar.component';
-import { ExibirTodosCargosComponent } from './cargos/exibir-todos/exibir-todos.component';
-import { ExibirTodosEleitoresComponent } from './eleitores/exibir-todos/exibir-todos.component';
+import { CargoCadastrarEditarComponent } from './cargos/cadastrar-editar/cadastrar-editar.component';
+import { CargoExibirDeletarComponent } from './cargos/exibir-deletar/exibir-deletar.component';
+
+
+import { EleitorCadastrarEitarComponent } from './eleitores/cadastrar-editar/cadastrar-editar.component';
+import { EleitorExibirDeletarComponent } from './eleitores/exibir-deletar/exibir-deletar.component';
+import { FilterNomeEleitor } from './eleitores/exibir-deletar/filter-nome-eleitor.pipe';
+import { FilterCpfEleitor } from './eleitores/exibir-deletar/filter-cpf-eleitor.pipe';
 
 @NgModule({
   declarations: [
-    CargoCadastrarComponent,
-    EleitorCadastrarComponent,
-    ExibirTodosCargosComponent,
-    ExibirTodosEleitoresComponent,
+    CargoCadastrarEditarComponent,
+    CargoExibirDeletarComponent,
+    EleitorCadastrarEitarComponent,
+    EleitorExibirDeletarComponent,
+    FilterNomeEleitor,
+    FilterCpfEleitor
   ],
   imports: [
     CommonModule,

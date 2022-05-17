@@ -1,16 +1,16 @@
 <div class="container" id="total">
-  <h5>Cadastrar eleitor</h5>
+  <h5>{{ estaEditando() ? "Edicão" : "Cadastro" }} de eleitor</h5>
 
   <div id="form">
-    <form [formGroup]="formEleitorCadastro" (ngSubmit)="cadastrar()">
+    <form [formGroup]="formulario" (ngSubmit)="enviar()">
       <fieldset>
         <label for="nome" class="form-label">Nome</label>
         <input id="nome" class="form-control" formControlName="nome"/>
 
         <div
           *ngIf="
-            formEleitorCadastro.get('nome')?.errors?.['required'] &&
-            formEleitorCadastro.get('nome')?.touched"
+            formulario.get('nome')?.errors?.['required'] &&
+            formulario.get('nome')?.touched"
             class="form-text text-danger">
             Campo obrigatório
         </div>
@@ -22,8 +22,8 @@
 
         <div
           *ngIf="
-            formEleitorCadastro.get('cpf')?.errors?.['required'] &&
-            formEleitorCadastro.get('cpf')?.touched"
+            formulario.get('cpf')?.errors?.['required'] &&
+            formulario.get('cpf')?.touched"
             class="form-text text-danger">
             Campo obrigatório
         </div>
@@ -38,7 +38,7 @@
       </fieldset>
 
       <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-outline-light" [disabled]="formEleitorCadastro.invalid">Cadastrar</button>
+        <button type="submit" class="btn btn-outline-light" [disabled]="formulario.invalid">{{ estaEditando() ? "Editar" : "Cadastrar" }}</button>
       </div>
     </form>
   </div>

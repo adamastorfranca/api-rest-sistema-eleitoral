@@ -1,4 +1,4 @@
-export interface IEleitor {
+export interface IEleitorResponse {
   id: number;
   nome: string;
   cpf: string;

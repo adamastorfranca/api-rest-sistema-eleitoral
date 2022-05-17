@@ -1,4 +1,4 @@
-export interface ICargo {
+export interface ICargoResponse {
   id: number;
   nome: string;
   ativo: boolean;

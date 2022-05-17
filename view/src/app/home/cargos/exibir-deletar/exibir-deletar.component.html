@@ -22,7 +22,7 @@
 
       <td>{{ cargo.criadoEm | date: 'short' }}</td>
 
-      <td *ngIf="cargo.desativadoEm !== null">{{ cargo.alteradoEm | date: 'short' }}</td>
+      <td *ngIf="cargo.alteradoEm !== null">{{ cargo.alteradoEm | date: 'short' }}</td>
       <td *ngIf="cargo.alteradoEm === null">-</td>
 
       <td *ngIf="cargo.desativadoEm !== null">{{ cargo.desativadoEm | date: 'short' }}</td>
@@ -32,8 +32,8 @@
           <button class="btn btn-dark dropdown-toggle" style="background-color: black;" type="button"
             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a type="button" class="dropdown-item">Alterar</a></li>
-            <li><a type="button" class="dropdown-item" (click)="confirmar(cargo.id)">Excluir</a></li>
+            <li><a type="button" class="dropdown-item" [routerLink]="['/cargos/editar', cargo.id]">Editar</a></li>
+            <li><a type="button" class="dropdown-item" (click)="deletar(cargo.id)">Deletar</a></li>
           </ul>
         </div>
       </td>

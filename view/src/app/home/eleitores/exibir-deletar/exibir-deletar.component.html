@@ -1,0 +1,69 @@
+<h5>Eleitores</h5>
+
+<div class="text-center mt-3 mb-3">
+  <form>
+    <label>Filtrar por nome: </label>
+    <input
+      class="rounded"
+      type="text"
+      autofocus
+      (keyup)="nomeDigitado($event.target)"
+      >
+  </form>
+</div>
+<div class="text-center mt-3 mb-3">
+  <form>
+    <label>Filtrar por CPF: </label>
+    <input
+      class="rounded"
+      type="text"
+      autofocus
+      (keyup)="cpfDigitado($event.target)"
+      >
+  </form>
+</div>
+
+<table class="table table-dark table-striped">
+  <thead>
+    <tr>
+      <th scope="col" class="thead-eleitores">ID</th>
+      <th scope="col" class="thead-eleitores">Nome</th>
+      <th scope="col" class="thead-eleitores">CPF</th>
+      <th scope="col" class="thead-eleitores">Status</th>
+      <th scope="col" class="thead-eleitores">Data cadastro</th>
+      <th scope="col" class="thead-eleitores">Data alteração</th>
+      <th scope="col" class="thead-eleitores">Data desativação</th>
+      <th scope="col" class="thead-cargos">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let eleitor of eleitores | filterNomeEleitor: filterNome | filterCpfEleitor: filterCpf">
+      <td>{{ eleitor.id }}</td>
+      <td>{{ eleitor.nome }}</td>
+      <td>{{ eleitor.cpf }}</td>
+
+      <td *ngIf="eleitor.ativo === true">Sim</td>
+      <td *ngIf="eleitor.ativo === false">Não</td>
+
+      <td>{{ eleitor.criadoEm | date: 'short' }}</td>
+
+      <td *ngIf="eleitor.alteradoEm !== null">{{ eleitor.alteradoEm | date: 'short' }}</td>
+      <td *ngIf="eleitor.alteradoEm === null">-</td>
+
+      <td *ngIf="eleitor.desativadoEm !== null">{{ eleitor.desativadoEm | date: 'short' }}</td>
+      <td *ngIf="eleitor.desativadoEm === null">-</td>
+      <td>
+        <div class="dropdown">
+          <button class="btn btn-dark dropdown-toggle" style="background-color: black;" type="button"
+            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a type="button" class="dropdown-item" [routerLink]="['/eleitores/editar', eleitor.id]">Editar</a></li>
+            <li><a type="button" class="dropdown-item" (click)="deletar(eleitor.id)">Deletar</a></li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<a type="button" class="btn btn-dark" id="botao-confirmacao" routerLink="">Página inicial</a>
+

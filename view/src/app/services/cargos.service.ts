@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-import { ICargoCadastro } from '../interfaces/cargo-cadastro';
+import { ICargoRequest as ICargoRequest } from '../interfaces/cargo-request';
 import { Observable } from 'rxjs';
-import { ICargo } from '../interfaces/cargo';
+import { ICargoResponse } from '../interfaces/cargo-response';
 import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
@@ -20,20 +20,26 @@ export class CargosService {
     private activedRoute: ActivatedRoute
   ) { }
 
-  cadastrar(cargo: ICargoCadastro){
+  cadastrar(cargo: ICargoRequest){
     return this.http.post(`${this.api}/${this.endpoint}/`, cargo);
   }
 
-  remover(id: number) {
+  editar(id: number, cargo: ICargoRequest){
+    return this.http.put(`${this.api}/${this.endpoint}/${id}`, cargo);
+  }
+
+  deletar(id: number) {
     return this.http.delete(`${this.api}/${this.endpoint}/${id}`);
   }
 
-  listarTodos(): Observable<ICargo[]> {
-    return this.http.get<ICargo[]>(`${this.api}/${this.endpoint}/`);
+  listarTodos(): Observable<ICargoResponse[]> {
+    return this.http.get<ICargoResponse[]>(`${this.api}/${this.endpoint}/`);
   }
 
-  buscar(): Observable<ICargo[]> {
-    return this.http.get<ICargo[]>(`${this.api}/${this.endpoint}`);
+  buscar(id: number): Observable<ICargoResponse[]> {
+    let params = new HttpParams();
+    params = params.append('id', id);
+    return this.http.get<ICargoResponse[]>(`${this.api}/${this.endpoint}`, {params: params});
   }
 
 }

@@ -1,4 +1,4 @@
-export interface ICargoCadastro {
+export interface ICargoRequest {
   nome: string;
   ativo: boolean;
 }

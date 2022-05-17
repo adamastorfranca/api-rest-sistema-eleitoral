@@ -1,22 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 
 import { CargosService } from 'src/app/services/cargos.service';
-import { ICargo } from 'src/app/interfaces/cargo';
+import { ICargoResponse } from 'src/app/interfaces/cargo-response';
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-exibir-todos',
-  templateUrl: './exibir-todos.component.html',
-  styleUrls: ['./exibir-todos.component.css']
+  selector: 'app-exibir-deletar',
+  templateUrl: './exibir-deletar.component.html',
+  styleUrls: ['./exibir-deletar.component.css']
 })
-export class ExibirTodosCargosComponent implements OnInit {
+export class CargoExibirDeletarComponent implements OnInit {
 
-  cargos: ICargo[] = [];
+  cargos: ICargoResponse[] = [];
 
   constructor(
     private service: CargosService,
-    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -32,7 +30,7 @@ export class ExibirTodosCargosComponent implements OnInit {
     });
   }
 
-  confirmar(id: number) {
+  deletar(id: number) {
     Swal.fire({
       title: 'Você está certo disso?',
       text: "Tem certeza que deseja remover este cargo?",
@@ -42,7 +40,7 @@ export class ExibirTodosCargosComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.remover(id).subscribe(() => {
+        this.service.deletar(id).subscribe(() => {
           Swal.fire({
             title: 'Removido!',
             text: 'Cargo removido com sucesso!',
