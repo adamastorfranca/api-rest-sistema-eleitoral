@@ -19,6 +19,9 @@ public class EleitorRequestDTO {
 		e.setNome(nome.toUpperCase());
 		e.setCpf(cpf);
 		e.setCriadoEm(LocalDateTime.now());
+		if(!ativo.booleanValue()) {
+			e.setDesativadoEm(LocalDateTime.now());
+		}
 		e.setAtivo(ativo);
 		return e;
 	}

@@ -23,7 +23,7 @@ footer, header, hgroup, menu, nav, section {
 
 body {
 	line-height: 1;
-  background: linear-gradient(gray, white, gray, white, gray);
+  background: black
 }
 
 ol, ul {
@@ -54,23 +54,6 @@ header {
 .navbar-brand {
   font-weight: bold;
   font-size: 30px;
-  margin-left: 15px;
+  margin-left: 28px;
 }
 
-.nav-link{
-  text-transform: uppercase;
-  padding-top: 20px;
-  font-size: 15px;
-}
-
-.dropdown-menu {
-  background-color: gray;
-}
-
-.dropdown-item {
-  font-weight: bold;
-}
-
-#botao-nav {
-  margin-right: 25px;
-}

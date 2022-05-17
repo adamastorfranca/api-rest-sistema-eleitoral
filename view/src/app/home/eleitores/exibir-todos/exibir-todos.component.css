@@ -1,0 +1,19 @@
+h5 {
+  margin-bottom: 50px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+table {
+  background-color: white;
+}
+
+.thead-eleitores {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.btn-dark {
+  margin-top: 25px;
+}

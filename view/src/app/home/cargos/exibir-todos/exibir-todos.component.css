@@ -1,0 +1,22 @@
+h5 {
+  margin-bottom: 50px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+table {
+  background-color: white;
+}
+
+.thead-cargos {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.dropdown-item{
+  font-weight: bold;
+}
+#botao-confirmacao {
+  margin-top: 25px;
+}

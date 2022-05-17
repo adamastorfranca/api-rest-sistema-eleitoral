@@ -1,18 +1,19 @@
-#total {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-  margin: 0 30%;
+.container {
+  background-color: #000000;
+  border-radius: 15px;
+  color: white;
+  width: 40%;
+  margin-top: 12%;
 }
 
 h5 {
   text-transform: uppercase;
-  margin-bottom: 10px;
+  padding-top: 5%;
   font-weight: bold;
 }
 
 #form {
-  padding: 0 10%;
+  padding: 5%;
   text-align: left;
 }
 

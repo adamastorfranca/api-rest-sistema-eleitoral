@@ -7,31 +7,36 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li>
-            <div class="dropdown">
-              <button class="btn btn-dark dropdown-toggle" style="background-color: black;" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                Eleitor
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" routerLink="eleitor-cadastro">Cadastrar</a></li>
-              </ul>
+            <a type="button" class="links" routerLink="">Página inicial</a>
+            <div class="dropdown" id="primeiro">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-inicio" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Eleitor
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" routerLink="eleitor-cadastro">Cadastrar</a></li>
+                  <li><a class="dropdown-item" routerLink="eleitores">Exibir todos</a></li>
+                </ul>
+              </li>
             </div>
             <div class="dropdown">
-              <button class="btn btn-dark dropdown-toggle" style="background-color: black;" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                Cargo
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" routerLink="cargo-cadastro">Cadastrar</a></li>
-              </ul>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-inicio" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Cargo
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" routerLink="cargo-cadastro">Cadastrar</a></li>
+                  <li><a class="dropdown-item" routerLink="cargos">Exibir todos</a></li>
+                </ul>
+              </li>
             </div>
-          </li>
         </ul>
       </div>
     </div>
   </nav>
 </header>
 <main>
-  <div class="container-black">
+  <div class="container-white">
     <router-outlet></router-outlet>
   </div>
 </main>

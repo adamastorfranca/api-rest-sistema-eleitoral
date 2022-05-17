@@ -1,0 +1,44 @@
+<h5>Cargos</h5>
+
+<table class="table table-dark table-striped">
+  <thead>
+    <tr>
+      <th scope="col" class="thead-cargos">ID</th>
+      <th scope="col" class="thead-cargos">Nome</th>
+      <th scope="col" class="thead-cargos">Status</th>
+      <th scope="col" class="thead-cargos">Data cadastro</th>
+      <th scope="col" class="thead-cargos">Data alteração</th>
+      <th scope="col" class="thead-cargos">Data desativação</th>
+      <th scope="col" class="thead-cargos">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cargo of cargos">
+      <td>{{ cargo.id }}</td>
+      <td>{{ cargo.nome }}</td>
+
+      <td *ngIf="cargo.ativo === true">Sim</td>
+      <td *ngIf="cargo.ativo === false">Não</td>
+
+      <td>{{ cargo.criadoEm | date: 'short' }}</td>
+
+      <td *ngIf="cargo.desativadoEm !== null">{{ cargo.alteradoEm | date: 'short' }}</td>
+      <td *ngIf="cargo.alteradoEm === null">-</td>
+
+      <td *ngIf="cargo.desativadoEm !== null">{{ cargo.desativadoEm | date: 'short' }}</td>
+      <td *ngIf="cargo.desativadoEm === null">-</td>
+      <td>
+        <div class="dropdown">
+          <button class="btn btn-dark dropdown-toggle" style="background-color: black;" type="button"
+            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a type="button" class="dropdown-item">Alterar</a></li>
+            <li><a type="button" class="dropdown-item" (click)="confirmar(cargo.id)">Excluir</a></li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<a type="button" class="btn btn-dark" id="botao-confirmacao" routerLink="">Página inicial</a>
+
