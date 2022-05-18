@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class CandidatoRequestDTO {
-
+	
 	private String nome;
 	
 	private String cpf;

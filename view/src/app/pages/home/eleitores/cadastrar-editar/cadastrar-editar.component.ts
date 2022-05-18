@@ -73,7 +73,7 @@ export class EleitorCadastrarEitarComponent implements OnInit {
   }
 
   estaEditando() {
-    return this.formulario.get("nome")?.value !== '';
+    return this.id !== 0;
   }
 }
 

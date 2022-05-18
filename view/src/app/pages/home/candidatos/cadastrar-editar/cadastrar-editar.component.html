@@ -1,0 +1,79 @@
+<div class="container" id="total">
+  <h5>{{ estaEditando() ? "Edicão" : "Cadastro" }} de candidato</h5>
+
+  <div id="form">
+    <form [formGroup]="formulario" (ngSubmit)="enviar()">
+      <fieldset>
+        <label for="nome" class="form-label">Nome</label>
+        <input id="nome" class="form-control" formControlName="nome"/>
+
+        <div
+          *ngIf="
+            formulario.get('nome')?.errors?.['required'] &&
+            formulario.get('nome')?.touched"
+            class="form-text text-danger">
+            Campo obrigatório
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label for="cpf" class="form-label">CPF</label>
+        <input id="cpf" class="form-control" formControlName="cpf"/>
+
+        <div
+          *ngIf="
+            formulario.get('cpf')?.errors?.['required'] &&
+            formulario.get('cpf')?.touched"
+            class="form-text text-danger">
+            Campo obrigatório
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label for="idCargo" class="form-label">Cargo</label>
+        <select class="form-select" formControlName="idCargo">
+          <option value="null" hidden>Selecionar um cargo...</option>
+          <option *ngFor="let cargo of cargos" [value]=cargo.id>{{ cargo.nome }}</option>
+        </select>
+      </fieldset>
+
+      <fieldset>
+        <label for="numero" class="form-label">Número</label>
+        <input id="numero" class="form-control" formControlName="numero"/>
+
+        <div
+          *ngIf="
+            formulario.get('numero')?.errors?.['required'] &&
+            formulario.get('numero')?.touched"
+            class="form-text text-danger">
+            Campo obrigatório
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label for="legenda" class="form-label">Legenda</label>
+        <input id="legenda" class="form-control" formControlName="legenda"/>
+
+        <div
+          *ngIf="
+            formulario.get('legenda')?.errors?.['required'] &&
+            formulario.get('legenda')?.touched"
+            class="form-text text-danger">
+            Campo obrigatório
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label for="ativo" class="form-label">Status</label>
+        <select class="form-select" formControlName="ativo">
+          <option value=true>Ativo</option>
+          <option value=false>Inativo</option>
+        </select>
+      </fieldset>
+
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-outline-light" [disabled]="formulario.invalid">{{ estaEditando() ? "Editar" : "Cadastrar" }}</button>
+      </div>
+    </form>
+  </div>
+</div>

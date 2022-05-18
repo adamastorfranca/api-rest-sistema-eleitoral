@@ -1,0 +1,41 @@
+h5 {
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.col-6 {
+  text-align: left;
+}
+
+label {
+  font-weight: bold;
+  margin: 0 10px 30px 0;
+}
+
+input {
+  width: 70%;
+}
+
+table {
+  vertical-align: middle;
+}
+
+.thead-cargos {
+  text-transform: uppercase;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+#nome {
+  text-align: start;
+}
+
+.dropdown-item{
+  font-weight: bold;
+}
+
+#botao-confirmacao {
+  margin: 25px 10px;
+}

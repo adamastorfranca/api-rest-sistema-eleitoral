@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.adamastor.eleicao.model.entity.Candidato;
+import br.com.adamastor.eleicao.model.entity.Cargo;
 import lombok.Data;
 
 @Data
@@ -23,7 +24,7 @@ public class CandidatoResponseDTO implements Serializable {
 	
 	private String legenda;
 	
-	private String nomeCargo;
+	private Cargo cargo;
 
 	private LocalDateTime criadoEm;
 
@@ -39,7 +40,7 @@ public class CandidatoResponseDTO implements Serializable {
 		this.cpf = candidato.getCpf();
 		this.numero = candidato.getNumero();
 		this.legenda = candidato.getLegenda();
-		this.nomeCargo = candidato.getCargo().getNome();
+		this.cargo = candidato.getCargo();
 		this.criadoEm = candidato.getCriadoEm();
 		this.alteradoEm = candidato.getAlteradoEm();
 		this.desativadoEm = candidato.getDesativadoEm();

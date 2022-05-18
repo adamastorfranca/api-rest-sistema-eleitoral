@@ -8,10 +8,12 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <a type="button" class="links" routerLink="">Página inicial</a>
+            <a type="button" class="links" routerLink="">Votar</a>
+            <a type="button" class="links" routerLink="">Resultado</a>
             <div class="dropdown" id="primeiro">
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-inicio" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Eleitor
+                  Eleitores
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li><a class="dropdown-item" routerLink="eleitores/cadastro">Cadastrar</a></li>
@@ -22,7 +24,18 @@
             <div class="dropdown">
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-inicio" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Cargo
+                  Candidatos
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" routerLink="candidatos/cadastro">Cadastrar</a></li>
+                  <li><a class="dropdown-item" routerLink="candidatos">Exibir todos</a></li>
+                </ul>
+              </li>
+            </div>
+            <div class="dropdown">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-inicio" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Cargos
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li><a class="dropdown-item" routerLink="cargos/cadastro">Cadastrar</a></li>

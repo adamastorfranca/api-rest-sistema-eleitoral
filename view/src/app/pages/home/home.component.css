@@ -15,10 +15,9 @@
 .container-white {
   background-color: rgb(200, 200, 200);
   text-align: center;
-  margin: 30px 30px 0 30px;
+  margin: 30px 30px 30px 30px;
   padding: 5%;
-  width: 95% auto;
-  height: 780px;
+  width: 95%;
   border-radius: 15px;
 }
 

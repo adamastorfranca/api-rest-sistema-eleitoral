@@ -15,10 +15,10 @@
   <tbody>
     <tr *ngFor="let cargo of cargos">
       <td>{{ cargo.id }}</td>
-      <td>{{ cargo.nome }}</td>
+      <td id="nome">{{ cargo.nome }}</td>
 
-      <td *ngIf="cargo.ativo === true">Sim</td>
-      <td *ngIf="cargo.ativo === false">Não</td>
+      <td *ngIf="cargo.ativo === true">Ativo</td>
+      <td *ngIf="cargo.ativo === false">Inativo</td>
 
       <td>{{ cargo.criadoEm | date: 'short' }}</td>
 
@@ -40,5 +40,7 @@
     </tr>
   </tbody>
 </table>
-<a type="button" class="btn btn-dark" id="botao-confirmacao" routerLink="">Página inicial</a>
+
+<a type="button" class="btn btn-dark" id="botao-confirmacao" routerLink="/cargos/cadastro">Cadastrar</a>
+<a type="button" class="btn btn-dark" id="botao-confirmacao" routerLink="">Voltar</a>
 
