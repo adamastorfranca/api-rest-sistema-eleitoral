@@ -1,12 +1,15 @@
 package br.com.adamastor.eleicao.model.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import br.com.adamastor.eleicao.model.entity.Eleitor;
 import lombok.Data;
 
 @Data
-public class EleitorRequestDTO {
+public class EleitorRequestDTO implements Serializable {
+
+	private static final long serialVersionUID = -8578249447885331282L;
 
 	private String nome;
 

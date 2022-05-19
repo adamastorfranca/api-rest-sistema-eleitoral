@@ -33,12 +33,12 @@ public class VotoService {
 	private CargoService cargoService;
 
 	@Transactional(rollbackOn = AplicacaoException.class)
-	public void votar(Long idEleitor, VotoRequestDTO voto) {
+	public void votar(VotoRequestDTO voto) {
 		Voto v = new Voto();
 		VotoId vId = new VotoId();
 		Cargo cargo = cargoService.buscarCargoDaVotacao(voto.getIdCargo());
 		Candidato c = candidatoService.buscarCandidatoParaSerVotado(voto.getIdCandidato());
-		vId.setEleitor(eleitorService.buscarEleitorParaVotar(idEleitor));
+		vId.setEleitor(eleitorService.buscarEleitorParaVotar(voto.getIdEleitor()));
 		vId.setCargo(cargo);
 		v.setId(vId);
 		v.setData(LocalDateTime.now());

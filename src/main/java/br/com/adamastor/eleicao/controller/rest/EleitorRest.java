@@ -68,9 +68,9 @@ public class EleitorRest {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/{id}/votar", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> votar(@PathVariable Long id, @RequestBody VotoRequestDTO voto) {
-		votoService.votar(id, voto);
+	@PostMapping(value = "/votar", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> votar(@RequestBody VotoRequestDTO voto) {
+		votoService.votar(voto);
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

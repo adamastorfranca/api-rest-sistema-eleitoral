@@ -9,6 +9,8 @@ import { EleitorCadastrarEitarComponent } from './eleitores/cadastrar-editar/cad
 import { EleitorExibirDeletarComponent } from './eleitores/exibir-deletar/exibir-deletar.component';
 import { CandidatoExibirDeletarComponent } from './candidatos/exibir-deletar/exibir-deletar.component';
 import { CandidatoCadastrarEditarComponent } from './candidatos/cadastrar-editar/cadastrar-editar.component';
+import { BuscarEleitorParaVotarComponent } from './eleitores/buscar-eleitor-para-votar/buscar-eleitor.component';
+import { VotarComponent } from './eleitores/votar/votar.component';
 
 const routes: Routes = [
   {
@@ -26,6 +28,10 @@ const routes: Routes = [
       { path: 'candidatos', component: CandidatoExibirDeletarComponent },
       { path: 'candidatos/cadastro', component: CandidatoCadastrarEditarComponent },
       { path: 'candidatos/editar/:id', component: CandidatoCadastrarEditarComponent },
+
+      { path: 'buscar-eleitor', component: BuscarEleitorParaVotarComponent },
+      { path: 'votar/:id', component: VotarComponent },
+
     ],
   },
 ];

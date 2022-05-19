@@ -31,7 +31,7 @@ export class CargoCadastrarEditarComponent implements OnInit {
   ngOnInit(): void {
     this.id = Number(this.activedRoute.snapshot.paramMap.get('id'));
     if (this.id) {
-      this.service.buscar(this.id).subscribe((result) => {
+      this.service.buscar(this.id, '', '').subscribe((result) => {
         this.cargoTemp = result[0]
         this.formulario = this.preencherFormGroup(this.cargoTemp);
       }, error => {

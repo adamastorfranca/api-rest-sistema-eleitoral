@@ -1,16 +1,26 @@
 <header>
-  <nav class="navbar navbar-expand navbar-dark bg-black">
+  <nav class="navbar navbar-expand navbar-light">
     <div class="container-fluid">
-      <a class="navbar-brand" routerLink="">Eleição</a>
+      <a class="navbar-brand" routerLink="">Eleições</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <a type="button" class="links" routerLink="">Página inicial</a>
-            <a type="button" class="links" routerLink="">Votar</a>
-            <a type="button" class="links" routerLink="">Resultado</a>
+            <a type="button" class="links" routerLink="buscar-eleitor">Votar</a>
             <div class="dropdown" id="primeiro">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-inicio" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Resultados
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" routerLink="eleitores/cadastro">Individual</a></li>
+                  <li><a class="dropdown-item" routerLink="eleitores">Geral</a></li>
+                </ul>
+              </li>
+            </div>
+            <div class="dropdown">
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-inicio" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Eleitores
@@ -53,5 +63,6 @@
     <router-outlet></router-outlet>
   </div>
 </main>
+<footer></footer>
 
 

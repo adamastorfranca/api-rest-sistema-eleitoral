@@ -24,7 +24,7 @@ export class EleitorExibirDeletarComponent implements OnInit {
   }
 
   listarTodos() {
-    this.service.listarTodos().subscribe((result) => {
+    this.service.buscar('', '', '', '').subscribe((result) => {
       this.eleitores = result;
     }, error => {
       alert('Erro ao buscar a lista de eleitores')

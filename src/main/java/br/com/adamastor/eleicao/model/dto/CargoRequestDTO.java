@@ -1,12 +1,15 @@
 package br.com.adamastor.eleicao.model.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import br.com.adamastor.eleicao.model.entity.Cargo;
 import lombok.Data;
 
 @Data
-public class CargoRequestDTO {
+public class CargoRequestDTO implements Serializable {
+
+	private static final long serialVersionUID = -6363212527410137180L;
 
 	private String nome;
 	

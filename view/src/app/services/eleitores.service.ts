@@ -14,6 +14,8 @@ export class EleitoresService {
   api = environment.api;
   endpoint = 'eleitores';
 
+  eleitor!: IEleitorResponse;
+
   constructor(
     private http: HttpClient
   ) { }
@@ -30,13 +32,12 @@ export class EleitoresService {
     return this.http.delete(`${this.api}/${this.endpoint}/${id}`);
   }
 
-  listarTodos(): Observable<IEleitorResponse[]> {
-    return this.http.get<IEleitorResponse[]>(`${this.api}/${this.endpoint}/`);
-  }
-
-  buscar(id: number): Observable<IEleitorResponse[]> {
+  buscar(id: number | string, nome: string, cpf: string, ativo: boolean | string): Observable<IEleitorResponse[]> {
     let params = new HttpParams();
     params = params.append('id', id);
+    params = params.append('nome', nome);
+    params = params.append('cpf', cpf);
+    params = params.append('ativo', id);
     return this.http.get<IEleitorResponse[]>(`${this.api}/${this.endpoint}`, {params: params});
   }
 }

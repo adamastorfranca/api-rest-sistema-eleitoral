@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { CandidatosService } from 'src/app/services/candidatos.service';
 import { ICandidatoRequest } from 'src/app/interfaces/candidato-request';
-import Swal from 'sweetalert2';
 import { CargosService } from 'src/app/services/cargos.service';
 import { ICargoResponse } from 'src/app/interfaces/cargo-response';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cadastrar-editar',
@@ -18,14 +18,15 @@ export class CandidatoCadastrarEditarComponent implements OnInit {
   candidatoTemp: ICandidatoRequest = {
     nome: '',
     cpf: '',
-    numero: 0,
+    numero: null,
     legenda: '',
-    idCargo: 0,
+    idCargo: '',
     ativo: true
   }
   id: number = 0;
   formulario: FormGroup = this.preencherFormGroup(this.candidatoTemp);
   cargos: ICargoResponse[] = [];
+  cpfEstaDesabilitado = false;
 
   constructor(
     private service: CandidatosService,
@@ -38,7 +39,9 @@ export class CandidatoCadastrarEditarComponent implements OnInit {
     this.buscarCargos();
     this.id = Number(this.activedRoute.snapshot.paramMap.get('id'));
     if (this.id) {
-      this.service.buscar(this.id).subscribe((result) => {
+      this.formulario.get('cpf')?.disable();
+      this.cpfEstaDesabilitado = true;
+      this.service.buscar(this.id, '', '', '', '', '').subscribe((result) => {
         this.candidatoTemp.nome = result[0].nome;
         this.candidatoTemp.cpf = result[0].cpf;
         this.candidatoTemp.numero = result[0].numero;
@@ -90,8 +93,12 @@ export class CandidatoCadastrarEditarComponent implements OnInit {
   }
 
   buscarCargos() {
-    this.cargosService.listarTodos().subscribe((result) => {
-      this.cargos = result;
+    this.cargosService.buscar('', '', '').subscribe((result) => {
+      result.filter((cargo: ICargoResponse) => {
+        if(cargo.ativo) {
+          this.cargos.push(cargo);
+        }
+      });
     },
     (error) => {
       alert('Erro ao buscar cargos!')

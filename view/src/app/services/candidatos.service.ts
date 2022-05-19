@@ -30,13 +30,14 @@ export class CandidatosService {
     return this.http.delete(`${this.api}/${this.endpoint}/${id}`);
   }
 
-  listarTodos(): Observable<ICandidatoResponse[]> {
-    return this.http.get<ICandidatoResponse[]>(`${this.api}/${this.endpoint}/`);
-  }
-
-  buscar(id: number): Observable<ICandidatoResponse[]> {
+  buscar(id: number | string, nome: string, cpf: string, numero: number | string, legenda: string, ativo: boolean | string): Observable<ICandidatoResponse[]> {
     let params = new HttpParams();
     params = params.append('id', id);
+    params = params.append('nome', nome);
+    params = params.append('cpf', cpf);
+    params = params.append('numero', numero);
+    params = params.append('legenda', legenda);
+    params = params.append('ativo', id);
     return this.http.get<ICandidatoResponse[]>(`${this.api}/${this.endpoint}`, {params: params});
   }
 }

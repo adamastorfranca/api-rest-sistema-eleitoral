@@ -1,0 +1,25 @@
+.container {
+  background-color: #000000;
+  border-radius: 15px;
+  color: white;
+  width: 50%;
+}
+
+h5 {
+  text-transform: uppercase;
+  padding-top: 5%;
+  font-weight: bold;
+}
+
+#form {
+  padding: 5%;
+  text-align: left;
+}
+
+.form-label {
+  margin: 10px 0;
+}
+
+button {
+  margin: 30px 0 10px 0;
+}

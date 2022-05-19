@@ -18,7 +18,8 @@
 
       <fieldset>
         <label for="cpf" class="form-label">CPF</label>
-        <input id="cpf" class="form-control" formControlName="cpf"/>
+        <input id="cpf" class="form-control" formControlName="cpf" *ngIf="(!cpfEstaDesabilitado)"/>
+        <input id="cpf" class="form-control" formControlName="cpf" *ngIf="(cpfEstaDesabilitado)" style="background-color: gray;"/>
 
         <div
           *ngIf="

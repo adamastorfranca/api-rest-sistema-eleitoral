@@ -18,10 +18,9 @@ export class EleitorCadastrarEitarComponent implements OnInit {
     cpf: '',
     ativo: true
   }
-
   id!: number;
-
   formulario: FormGroup = this.preencherFormGroup(this.eleitorTemp);
+  cpfEstaDesabilitado = false;
 
   constructor(
     private service: EleitoresService,
@@ -32,7 +31,9 @@ export class EleitorCadastrarEitarComponent implements OnInit {
   ngOnInit(): void {
     this.id = Number(this.activedRoute.snapshot.paramMap.get('id'));
     if (this.id) {
-      this.service.buscar(this.id).subscribe((result) => {
+      this.formulario.get('cpf')?.disable();
+      this.cpfEstaDesabilitado = true;
+      this.service.buscar(this.id, '', '', '').subscribe((result) => {
         this.eleitorTemp = result[0]
         this.formulario = this.preencherFormGroup(this.eleitorTemp);
       }, error => {

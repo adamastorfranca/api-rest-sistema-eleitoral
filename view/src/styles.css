@@ -23,7 +23,7 @@ footer, header, hgroup, menu, nav, section {
 
 body {
 	line-height: 1;
-  background: black
+  background: rgba(225, 225, 0, 0.493);
 }
 
 ol, ul {
@@ -47,13 +47,16 @@ table {
 
 header {
   padding: 10px 0;
-  background-color: black;
+  background-color: rgba(0, 157, 0, 0.598);
   border-bottom: 3px solid white;
 }
 
 .navbar-brand {
   font-weight: bold;
-  font-size: 30px;
-  margin-left: 28px;
+  font-size: 35px;
+  margin-left: 25px;
 }
 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

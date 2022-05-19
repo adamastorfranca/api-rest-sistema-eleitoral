@@ -1,13 +1,16 @@
 package br.com.adamastor.eleicao.model.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import br.com.adamastor.eleicao.model.entity.Candidato;
 import lombok.Data;
 
 @Data
-public class CandidatoRequestDTO {
-	
+public class CandidatoRequestDTO implements Serializable {
+
+	private static final long serialVersionUID = -1760358246776668745L;
+
 	private String nome;
 	
 	private String cpf;

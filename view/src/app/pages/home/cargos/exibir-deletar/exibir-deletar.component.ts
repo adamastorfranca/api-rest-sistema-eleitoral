@@ -22,7 +22,7 @@ export class CargoExibirDeletarComponent implements OnInit {
   }
 
   listarTodos() {
-    this.service.listarTodos().subscribe((result) => {
+    this.service.buscar('', '', '').subscribe((result) => {
       this.cargos = result;
     }, error => {
       alert('Erro ao buscar a lista de cargos')

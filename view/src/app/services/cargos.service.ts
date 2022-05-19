@@ -32,13 +32,11 @@ export class CargosService {
     return this.http.delete(`${this.api}/${this.endpoint}/${id}`);
   }
 
-  listarTodos(): Observable<ICargoResponse[]> {
-    return this.http.get<ICargoResponse[]>(`${this.api}/${this.endpoint}/`);
-  }
-
-  buscar(id: number): Observable<ICargoResponse[]> {
+  buscar(id: number | string, nome: string, ativo: boolean | string): Observable<ICargoResponse[]> {
     let params = new HttpParams();
     params = params.append('id', id);
+    params = params.append('nome', nome);
+    params = params.append('ativo', id);
     return this.http.get<ICargoResponse[]>(`${this.api}/${this.endpoint}`, {params: params});
   }
 

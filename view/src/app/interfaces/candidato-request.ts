@@ -1,8 +1,8 @@
 export interface ICandidatoRequest {
   nome: string;
   cpf: string;
-  numero: number;
+  numero: number | null;
   legenda: string;
-  idCargo: number;
+  idCargo: number | string;
   ativo: boolean;
 }
