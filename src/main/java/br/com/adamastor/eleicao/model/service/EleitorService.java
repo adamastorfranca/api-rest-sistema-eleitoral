@@ -99,14 +99,13 @@ public class EleitorService {
 			}
 			e.setCpf(formulario.getCpf());
 		}
-		if (formulario.getAtivo() != null) {
-			e.setAtivo(formulario.getAtivo());
-			if (formulario.getAtivo().booleanValue()) {
-				e.setDesativadoEm(null);
-			} else {
-				e.setDesativadoEm(LocalDateTime.now());
-			}
+		if (formulario.getAtivo().booleanValue() && !e.isAtivo()) {
+			e.setDesativadoEm(null);
+		} 
+		if (!formulario.getAtivo().booleanValue() && e.isAtivo()) {
+			e.setDesativadoEm(LocalDateTime.now());
 		}
+		e.setAtivo(formulario.getAtivo());	
 		e.setAlteradoEm(LocalDateTime.now());
 		repository.save(e);
 		return e;

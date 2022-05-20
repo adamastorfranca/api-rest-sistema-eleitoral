@@ -9,10 +9,14 @@ public class VotoRequestDTO implements Serializable {
 
 	private static final long serialVersionUID = -4221323463887323507L;
 
-	Long idEleitor;
+	private Long idEleitor;
 	
 	private Long idCargo;
 	
 	private Long idCandidato;
+	
+	private boolean emBranco;
+	
+	private boolean nulo;
 
 }

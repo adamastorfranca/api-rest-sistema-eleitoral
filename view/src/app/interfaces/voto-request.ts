@@ -1,5 +1,7 @@
 export interface IVotoRequest {
-  idEleitor: number | string;
-  idCargo: number | string;
-  idCandidato: number | string;
+  idEleitor: number;
+  idCargo: number;
+  idCandidato: number | null;
+  emBranco: boolean;
+  nulo: boolean
 }

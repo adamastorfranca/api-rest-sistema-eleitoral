@@ -29,6 +29,12 @@ public class Voto implements Serializable {
 	@Column(name = "DT_VOTO", nullable = false, updatable = false)
 	private LocalDateTime data;
 	
+	@Column(name = "BRANCO")
+	private boolean emBranco;
+	
+	@Column(name = "NULO")
+	private boolean nulo;
+	
 	@ManyToOne
 	@JoinColumn(name = "FK_CANDIDATO", updatable = false)
 	private Candidato candidato;

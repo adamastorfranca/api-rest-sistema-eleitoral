@@ -130,14 +130,13 @@ public class CandidatoService {
 		if (!c.getCargo().getId().equals(formulario.getIdCargo())) {
 			c.setCargo(cargoService.buscarCargoDaVotacao(formulario.getIdCargo()));
 		}
-		if (formulario.getAtivo() != null) {
-			c.setAtivo(formulario.getAtivo());
-			if (formulario.getAtivo().booleanValue()) {
-				c.setDesativadoEm(null);
-			} else {
-				c.setDesativadoEm(LocalDateTime.now());
-			}
+		if (formulario.getAtivo().booleanValue() && !c.isAtivo()) {
+			c.setDesativadoEm(null);
+		} 
+		if (!formulario.getAtivo().booleanValue() && c.isAtivo()) {
+			c.setDesativadoEm(LocalDateTime.now());
 		}
+		c.setAtivo(formulario.getAtivo());	
 		c.setAlteradoEm(LocalDateTime.now());
 		repository.save(c);
 		return c;

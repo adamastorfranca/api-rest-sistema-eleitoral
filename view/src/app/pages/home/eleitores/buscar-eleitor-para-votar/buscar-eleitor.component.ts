@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ICandidatoResponse } from 'src/app/interfaces/candidato-response';
-import { ICargoResponse } from 'src/app/interfaces/cargo-response';
 import { IEleitorResponse } from 'src/app/interfaces/eleitor-response';
 import Swal from 'sweetalert2';
 import { EleitoresService } from 'src/app/services/eleitores.service';
@@ -30,7 +28,7 @@ export class BuscarEleitorParaVotarComponent implements OnInit {
 
   buscarEleitor() {
     const cpf = this.formulario.get('cpf')?.value;
-    this.eleitoresService.buscar('', '', cpf, '').subscribe((result) => {
+    this.eleitoresService.buscar('', '', cpf, true).subscribe((result) => {
       this.eleitor = result[0];
 
       if(this.eleitor !== undefined) {

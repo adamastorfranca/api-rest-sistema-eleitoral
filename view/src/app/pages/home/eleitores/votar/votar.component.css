@@ -1,49 +1,100 @@
 #total {
-  background-color: rgba(169, 169, 169, 0.711);
-  border-radius: 15px;
+  background-color: rgb(195, 195, 195);
+  padding: 15px;
   width: 95%;
 }
 
 #tela {
   background-color: white;
-  border-radius: 15px;
-  padding: 10px;
-  margin: 10px;
+  padding: 5%;
+  margin: 5% 2% 5% 5%;
+  width: 93%;
+  height: 90%;
+}
+
+.voto {
+  font-weight: bold;
+  font-size: 25px;
+  border: 2px solid black;
+  margin: 4% 2%;
+  padding: 1%;
+  max-width: 40px;
+  height: 40px;
 }
 
 #numeros {
   background-color: black;
-  border-radius: 15px;
-  padding: 10px;
-  margin: 10px;
-}
-
-h6 {
-  text-transform: uppercase;
-  padding-top: 20px;
-}
-
-
-
-
-
-
-
-h5 {
-  text-transform: uppercase;
+  color: white;
+  font-weight: bold;
   padding: 5%;
+  margin: 5% 5% 5% 2%;
+  width: 93%;
+  height: 90%;
+}
+
+h4 {
   font-weight: bold;
 }
 
-#form {
-  padding: 5%;
-  text-align: left;
+h6 {
+  font-weight: bold;
+  padding-top: 15px;
 }
 
-.form-label {
-  margin: 10px 0;
+#partido {
+  padding-top: 0px;
+  font-size: 20px;
 }
 
-button {
-  margin: 30px 0 10px 0;
+h5 {
+  padding: 5% 0;
+  font-weight: bold;
+  font-size: 25px
+}
+
+.digito {
+  background-color: rgb(93, 93, 93);
+  margin: 4%;
+  padding: 15px 0;
+  width: 25%;
+}
+
+.digito:hover {
+  background-color: rgb(65, 65, 65);
+
+}
+
+#branco {
+  color: black;
+  text-transform: uppercase;
+  background-color: white;
+}
+
+#corrige {
+  color: black;
+  text-transform: uppercase;
+  background-color: rgb(230, 92, 0);
+}
+
+#confirma {
+  color: black;
+  text-transform: uppercase;
+  background-color: rgb(0, 164, 14);
+}
+
+#branco:hover {
+  background-color: rgb(212, 212, 212);
+}
+
+#corrige:hover {
+
+  background-color: rgb(222, 116, 45);
+}
+
+#confirma:hover {
+  background-color: rgb(74, 168, 82);
+}
+
+img {
+  max-width: 50%;
 }

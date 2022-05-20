@@ -16,6 +16,8 @@ import { InicioComponent } from './inicio/inicio.component';
 import { CandidatoExibirDeletarComponent } from './candidatos/exibir-deletar/exibir-deletar.component';
 import { FilterNomeCandidato } from './candidatos/exibir-deletar/filter-nome-candidato.pipe';
 import { FilterCpfCandidato } from './candidatos/exibir-deletar/filter-cpf-candidato.pipe';
+import { FilterPartidoCandidato } from './candidatos/exibir-deletar/filter-partido-candidato.pipe';
+import { FilterCargoCandidato } from './candidatos/exibir-deletar/filter-cargo-candidato.pipe';
 import { CandidatoCadastrarEditarComponent } from './candidatos/cadastrar-editar/cadastrar-editar.component';
 import { BuscarEleitorParaVotarComponent } from './eleitores/buscar-eleitor-para-votar/buscar-eleitor.component';
 import { VotarComponent } from './eleitores/votar/votar.component';
@@ -32,6 +34,8 @@ import { VotarComponent } from './eleitores/votar/votar.component';
     CandidatoExibirDeletarComponent,
     FilterNomeCandidato,
     FilterCpfCandidato,
+    FilterPartidoCandidato,
+    FilterCargoCandidato,
     CandidatoCadastrarEditarComponent,
     BuscarEleitorParaVotarComponent,
     VotarComponent,

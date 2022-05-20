@@ -37,16 +37,29 @@ public class VotoService {
 		Voto v = new Voto();
 		VotoId vId = new VotoId();
 		Cargo cargo = cargoService.buscarCargoDaVotacao(voto.getIdCargo());
-		Candidato c = candidatoService.buscarCandidatoParaSerVotado(voto.getIdCandidato());
 		vId.setEleitor(eleitorService.buscarEleitorParaVotar(voto.getIdEleitor()));
 		vId.setCargo(cargo);
 		v.setId(vId);
-		v.setData(LocalDateTime.now());
-		if (c != null && c.getCargo().equals(cargo)) {
+		
+		Candidato c = candidatoService.buscarCandidatoParaSerVotado(voto.getIdCandidato());
+		if(c != null && c.getCargo().equals(cargo)) {
 			v.setCandidato(c);
+			v.setEmBranco(false);
+			v.setNulo(false);
 		} else {
-			throw new AplicacaoException("Número do candidato inexistente");
+			if(voto.isEmBranco()) {
+				v.setCandidato(null);
+				v.setEmBranco(true);
+				v.setNulo(false);
+			}
+			if(voto.isNulo()) {
+				v.setCandidato(null);
+				v.setNulo(true);
+				v.setEmBranco(false);
+			}
 		}
+	
+		v.setData(LocalDateTime.now());
 		repository.save(v);
 	}
 

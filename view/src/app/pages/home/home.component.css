@@ -1,7 +1,7 @@
 .d-inicio {
   text-transform: uppercase;
-  padding-top: 22px;
-  font-size: 14px;
+  padding-top: 21px;
+  font-size: 16px;
 }
 
 #primeiro {
@@ -17,6 +17,19 @@
   font-weight: bold;
 }
 
+.links {
+  color:rgba(0, 0, 0, 0.541);
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 21px 0 0 15px;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.links:hover {
+  color: rgb(0, 0, 0);
+}
+
 .container-white {
   background-color: rgba(0, 21, 184, 0.663);
   text-align: center;
@@ -24,19 +37,6 @@
   padding: 5%;
   width: 95%;
   border-radius: 15px;
-}
-
-.links {
-  color:rgba(0, 0, 0, 0.541);
-  font-weight: bold;
-  text-transform: uppercase;
-  margin: 22px 0 0 15px;
-  font-size: 14px;
-  text-decoration: none;
-}
-
-.links:hover {
-  color: rgb(0, 0, 0);
 }
 
 footer {

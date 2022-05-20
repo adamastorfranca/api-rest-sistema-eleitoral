@@ -41,7 +41,7 @@ export class CandidatoCadastrarEditarComponent implements OnInit {
     if (this.id) {
       this.formulario.get('cpf')?.disable();
       this.cpfEstaDesabilitado = true;
-      this.service.buscar(this.id, '', '', '', '', '').subscribe((result) => {
+      this.service.buscar(this.id, '', '', '', '', '', '').subscribe((result) => {
         this.candidatoTemp.nome = result[0].nome;
         this.candidatoTemp.cpf = result[0].cpf;
         this.candidatoTemp.numero = result[0].numero;

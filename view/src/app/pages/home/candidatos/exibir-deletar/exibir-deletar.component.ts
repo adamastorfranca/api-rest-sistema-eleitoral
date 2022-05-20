@@ -14,6 +14,8 @@ export class CandidatoExibirDeletarComponent implements OnInit {
   candidatos: ICandidatoResponse[] = [];
   filterNome: string = '';
   filterCpf: string = '';
+  filterCargo: string = '';
+  filterPartido: string = '';
 
   constructor(
     private service: CandidatosService
@@ -24,7 +26,7 @@ export class CandidatoExibirDeletarComponent implements OnInit {
   }
 
   listarTodos() {
-    this.service.buscar('', '', '', '', '', '').subscribe((result) => {
+    this.service.buscar('', '', '', '', '', '', '').subscribe((result) => {
       this.candidatos = result;
     }, error => {
       alert('Erro ao buscar a lista de candidatos')
@@ -66,6 +68,20 @@ export class CandidatoExibirDeletarComponent implements OnInit {
     if(target instanceof EventTarget) {
       var elemento = target as HTMLInputElement;
       this.filterCpf = elemento.value;
+    }
+  }
+
+  cargoDigitado(target : any) {
+    if(target instanceof EventTarget) {
+      var elemento = target as HTMLInputElement;
+      this.filterCargo = elemento.value;
+    }
+  }
+
+  partidoDigitado(target : any) {
+    if(target instanceof EventTarget) {
+      var elemento = target as HTMLInputElement;
+      this.filterPartido = elemento.value;
     }
   }
 }

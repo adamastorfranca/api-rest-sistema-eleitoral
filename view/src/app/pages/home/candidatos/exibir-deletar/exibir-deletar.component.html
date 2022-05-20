@@ -9,13 +9,27 @@
   </div>
   <div class="col-6">
     <form>
-      <label>Filtrar por CPF: </label>
+      <label  id="filterCpf">Filtrar por CPF: </label>
       <input class="rounded" type="text" autofocus (keyup)="cpfDigitado($event.target)">
     </form>
   </div>
 </div>
+<div class="row">
+  <div class="col-6">
+    <form>
+      <label>Filtrar por cargo: </label>
+      <input class="rounded segunda-linha" type="text" autofocus (keyup)="cargoDigitado($event.target)">
+    </form>
+  </div>
+  <div class="col-6">
+    <form>
+      <label>Filtrar por partido: </label>
+      <input class="rounded  segunda-linha" type="text" autofocus (keyup)="partidoDigitado($event.target)">
+    </form>
+  </div>
+</div>
 
-<table class="table table-dark table-striped">
+<table class="table table-light table-striped">
   <thead>
     <tr>
       <th scope="col" class="thead-candidatos">ID</th>
@@ -32,7 +46,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let candidato of candidatos | filterNomeCandidato: filterNome | filterCpfCandidato: filterCpf">
+    <tr *ngFor="let candidato of candidatos | filterNomeCandidato: filterNome | filterCpfCandidato: filterCpf | filterCargoCandidato: filterCargo | filterPartidoCandidato: filterPartido">
       <td>{{ candidato.id }}</td>
       <td id="nome">{{ candidato.nome }}</td>
       <td>{{ candidato.cpf }}</td>

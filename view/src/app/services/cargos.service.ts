@@ -36,7 +36,7 @@ export class CargosService {
     let params = new HttpParams();
     params = params.append('id', id);
     params = params.append('nome', nome);
-    params = params.append('ativo', id);
+    params = params.append('ativo', ativo);
     return this.http.get<ICargoResponse[]>(`${this.api}/${this.endpoint}`, {params: params});
   }
 

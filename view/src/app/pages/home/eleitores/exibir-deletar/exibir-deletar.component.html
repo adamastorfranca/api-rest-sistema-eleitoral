@@ -15,7 +15,7 @@
   </div>
 </div>
 
-<table class="table table-dark table-striped">
+<table class="table table-light table-striped">
   <thead>
     <tr>
       <th scope="col" class="thead-eleitores">ID</th>
@@ -49,6 +49,7 @@
           <button class="btn btn-dark dropdown-toggle" style="background-color: black;" type="button"
             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a type="button" class="dropdown-item" *ngIf="eleitor.ativo" [routerLink]="['/votar', eleitor.id]">Votar</a></li>
             <li><a type="button" class="dropdown-item" [routerLink]="['/eleitores/editar', eleitor.id]">Editar</a></li>
             <li><a type="button" class="dropdown-item" (click)="deletar(eleitor.id)">Deletar</a></li>
           </ul>

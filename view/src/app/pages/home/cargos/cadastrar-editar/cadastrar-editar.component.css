@@ -1,7 +1,6 @@
 .container {
-  background-color: #000000;
+  background-color: white;
   border-radius: 15px;
-  color: white;
   width: 40%;
 }
 
@@ -20,6 +19,22 @@ h5 {
   margin: 10px 0;
 }
 
+label {
+  font-weight: bold;
+}
+
+input {
+  border: 2px solid black;
+}
+
+select {
+  border: 2px solid black;
+}
+
 button {
   margin: 30px 0 10px 0;
+}
+
+button:hover {
+  background-color: rgb(58, 58, 58);
 }
