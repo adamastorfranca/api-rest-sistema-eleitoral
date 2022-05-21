@@ -1,0 +1,24 @@
+<div class="container">
+  <h5>{{ relatorio[0].nomeCargo }}</h5>
+
+    <table class="table table-light table-striped">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Número</th>
+          <th>Partido</th>
+          <th>Votos</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let candidato of relatorio">
+        <tr>
+          <td>{{ candidato.nomeCandidato }}</td>
+          <td>{{ candidato.numeroCandidato }}</td>
+          <td>{{ candidato.legendaCandidato }}</td>
+          <td>{{ candidato.votos }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  <a type="button" class="btn btn-dark" id="botao-confirmacao" routerLink="">Voltar</a>
+</div>

@@ -1,0 +1,27 @@
+<div class="container">
+  <h5>Buscar candidato</h5>
+
+  <div id="form">
+    <form [formGroup]="formulario" (ngSubmit)="selecionarCargo()">
+      <fieldset>
+        <label for="idCargo" class="form-label">Cargo</label>
+        <select class="form-select" formControlName="idCargo">
+          <option value="" hidden>Selecione</option>
+          <ng-container *ngFor="let cargo of cargos">
+            <option *ngIf="cargo.ativo" [value]=cargo.id required>{{ cargo.nome }}</option>
+          </ng-container>
+        </select>
+
+        <div *ngIf="
+          formulario.get('idCargo')?.errors?.['required'] &&
+          formulario.get('idCargo')?.touched" class="form-text text-danger">
+          Campo obrigatório
+        </div>
+      </fieldset>
+
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-dark" [disabled]="formulario.invalid">Buscar</button>
+      </div>
+    </form>
+  </div>
+</div>

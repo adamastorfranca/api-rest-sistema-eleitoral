@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import br.com.adamastor.eleicao.model.dto.CandidatoRequestDTO;
-import br.com.adamastor.eleicao.model.dto.EleitorRequestDTO;
 import br.com.adamastor.eleicao.model.entity.Candidato;
 import br.com.adamastor.eleicao.model.exception.AplicacaoException;
 import br.com.adamastor.eleicao.model.repository.CandidatoRepository;
@@ -35,8 +34,6 @@ public class CandidatoService {
 	private EntityManager em;
 	@Autowired
 	private CargoService cargoService;
-	@Autowired
-	private EleitorService eleitorService;
 	@Autowired
 	@Lazy
 	private VotoService votoService;
@@ -52,7 +49,7 @@ public class CandidatoService {
         Predicate nomePredicate = cb.like(candidato.get("nome"), "%" + nome + "%");
         Predicate cpfPredicate = cb.like(candidato.get("cpf"), "%" + cpf + "%");
         Predicate cargoPredicate = cb.equal(candidato.get("cargo"), cargoId);
-        Predicate numeroPredicate = cb.like(candidato.get("numero"), "%" + numero + "%");
+        Predicate numeroPredicate = cb.equal(candidato.get("numero"), numero);
         Predicate legendaPredicate = cb.like(candidato.get("legenda"), "%" + legenda + "%");
         Predicate ativoPredicate = cb.equal(candidato.get("ativo"), ativo);
         
@@ -98,7 +95,6 @@ public class CandidatoService {
 		Candidato c = formulario.gerarCandidato();
 		c.setCargo(cargoService.buscarCargoDaVotacao(formulario.getIdCargo()));
 		repository.save(c);
-		cadastrarComoEleitor(formulario);
 		return c;
 	}	
 
@@ -149,7 +145,7 @@ public class CandidatoService {
 			throw new AplicacaoException("ID informado não está cadastrado");
 		}
 		Candidato c = resultado.get();
-		if(votoService.verificarSeCandidatoRecebeuVoto(c)) {
+		if(c.isVotado()) {
 			throw new AplicacaoException("Candidato não pode ser deletado pois já recebeu voto");
 		}
 		repository.delete(c);
@@ -165,13 +161,5 @@ public class CandidatoService {
 			throw new AplicacaoException("Este candidato não já apto para eleição");
 		}
 		return c;
-	}
-
-	private void cadastrarComoEleitor(CandidatoRequestDTO form) {
-		EleitorRequestDTO formEleitor = new EleitorRequestDTO();
-		formEleitor.setNome(form.getNome());
-		formEleitor.setCpf(form.getCpf());
-		formEleitor.setAtivo(form.getAtivo());
-		eleitorService.cadastrarCandidatoComoEleitor(formEleitor);
 	}
 }

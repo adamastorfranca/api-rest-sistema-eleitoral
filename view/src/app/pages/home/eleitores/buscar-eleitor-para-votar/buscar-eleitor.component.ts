@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { IEleitorResponse } from 'src/app/interfaces/eleitor-response';
-import Swal from 'sweetalert2';
 import { EleitoresService } from 'src/app/services/eleitores.service';
-import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-buscar-eleitor',
@@ -20,7 +20,7 @@ export class BuscarEleitorParaVotarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private eleitoresService: EleitoresService,
+    private service: EleitoresService,
   ) { }
 
   ngOnInit(): void {
@@ -28,24 +28,32 @@ export class BuscarEleitorParaVotarComponent implements OnInit {
 
   buscarEleitor() {
     const cpf = this.formulario.get('cpf')?.value;
-    this.eleitoresService.buscar('', '', cpf, true).subscribe((result) => {
+    this.service.buscar('', '', cpf, true).subscribe((result) => {
       this.eleitor = result[0];
-
       if(this.eleitor !== undefined) {
-        Swal.fire({
-        title: this.eleitor.nome,
-        icon: 'success',
-        showCancelButton: true,
-        confirmButtonText: 'Confirmar',
-        cancelButtonText: 'Voltar'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.eleitoresService.eleitor = this.eleitor;
-          this.router.navigate(['/votar', this.eleitor.id]);
+        if(this.eleitor.votou){
+          Swal.fire({
+            title: 'Eleitor com CPF informado já votou',
+            icon: 'warning',
+          }).then(() => {
+            this.formulario.reset();
+          });
         } else {
-          this.formulario.reset();
+          Swal.fire({
+            title: this.eleitor.nome,
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonText: 'Confimar',
+            cancelButtonText: 'Cancelar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.service.eleitor = this.eleitor;
+              this.router.navigate(['/votar']);
+            } else {
+              this.formulario.reset();
+            }
+          });
         }
-      });
       } else {
         Swal.fire({
           title: 'CPF informado inválido',

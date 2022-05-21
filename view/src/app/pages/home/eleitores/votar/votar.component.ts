@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 
 import { ICandidatoResponse } from 'src/app/interfaces/candidato-response';
 import { ICargoResponse } from 'src/app/interfaces/cargo-response';
@@ -17,8 +16,7 @@ import { EleitoresService } from 'src/app/services/eleitores.service';
 })
 export class VotarComponent implements OnInit {
 
-  idEleitor = 0;
-  eleitor: IEleitorResponse | null = null;
+  eleitor!: IEleitorResponse;
 
   cargos: ICargoResponse[] = [];
   cargoAtual!: ICargoResponse;
@@ -32,6 +30,7 @@ export class VotarComponent implements OnInit {
   countCargos: number = 0;
   countNumero: number = 0;
 
+  camposVisiveis: boolean = true;
   selecionado = 0;
   digito1 = -1;
   digito2 = -1;
@@ -44,22 +43,18 @@ export class VotarComponent implements OnInit {
   })
 
   constructor(
-    private activedRoute: ActivatedRoute,
     private eleitoresService: EleitoresService,
     private cargosService: CargosService,
     private candidatosService: CandidatosService
   ) { }
 
   ngOnInit(): void {
-    this.idEleitor = Number(this.activedRoute.snapshot.paramMap.get('id'));
     this.buscarDados();
-    setTimeout(()=>{this.votacao()}, 2000);
+    setTimeout(() => { this.votacao() }, 2000);
   }
 
   buscarDados() {
-    this.eleitoresService.buscar(this.idEleitor, '', '', '').subscribe((result) => {
-      this.eleitor = result[0];
-    });
+    this.eleitor = this.eleitoresService.eleitor;
     this.cargosService.buscar('', '', true).subscribe((result) => {
       this.cargos = result;
     });
@@ -69,77 +64,78 @@ export class VotarComponent implements OnInit {
   }
 
   votacao() {
-    this.cargoAtual = this.cargos[this.countCargos];
-    this.candidatosDoCargo = [];
-    this.candidatos.filter((c) => {
-      if(c.cargo.id === this.cargoAtual.id) {
-        this.candidatosDoCargo.push(c);
+    if (this.cargos[this.countCargos] !== undefined) {
+      this.cargoAtual = this.cargos[this.countCargos];
+      this.candidatosDoCargo = [];
+      this.candidatos.filter((c) => {
+        if (c.cargo.id === this.cargoAtual.id) {
+          this.candidatosDoCargo.push(c);
+        }
+      });
+      this.countNumero = this.candidatosDoCargo[0].numero.toString().length;
+      if (this.countNumero === 2) {
+        this.digito3 = -2
       }
-    });
-    console.log(this.cargos)
-    this.countNumero = this.candidatosDoCargo[this.countCargos].numero.toString().length;
-
-    if(this.countNumero === 2) {
-      this.digito3 = -2
-    }
-    if(this.countNumero === 3) {
-      this.digito3 = -1
-    }
-    if(this.countNumero === 4) {
-      this.digito3 = -1
-      this.digito4 = -1
-    }
-    if(this.countNumero === 5) {
-      this.digito5 = -1
+      if (this.countNumero === 3) {
+        this.digito3 = -1
+      }
+      if (this.countNumero === 4) {
+        this.digito3 = -1
+        this.digito4 = -1
+      }
+      if (this.countNumero === 5) {
+        this.digito5 = -1
+      }
+    } else {
+      this.camposVisiveis = false;
     }
   }
 
   apertado(numero: number) {
-    if(this.digito1 === -1 && this.selecionado === 0) {
+    if (this.digito1 === -1 && this.selecionado === 0) {
       this.digito1 = numero;
       this.selecionado += 1;
-    } else if(this.digito1 !== -1 && this.selecionado === 1) {
+    } else if (this.digito1 !== -1 && this.selecionado === 1) {
       this.digito2 = numero;
-      this.selecionado +=1;
-    } else if(this.digito2 !== -1 && this.selecionado === 2) {
+      this.selecionado += 1;
+    } else if (this.digito2 !== -1 && this.selecionado === 2) {
       this.digito3 = numero;
-      this.selecionado +=1;
-    } else if(this.digito3 !== -1 && this.selecionado === 3) {
+      this.selecionado += 1;
+    } else if (this.digito3 !== -1 && this.selecionado === 3) {
       this.digito4 = numero;
-      this.selecionado +=1;
-    } else if(this.digito4 !== -1 && this.selecionado === 4) {
+      this.selecionado += 1;
+    } else if (this.digito4 !== -1 && this.selecionado === 4) {
       this.digito5 = numero;
-      this.selecionado +=1;
+      this.selecionado += 1;
     }
-
-    if(this.selecionado === this.countNumero && this.digito2 !== -1 &&  this.digito3 === -2  &&  this.digito4 === -2 &&  this.digito5 === -2) {
+    if (this.selecionado === this.countNumero && this.digito2 !== -1 && this.digito3 === -2 && this.digito4 === -2 && this.digito5 === -2) {
       this.numeroAtual = this.digito1.toString() + this.digito2.toString();
       this.candidatosDoCargo.filter((c) => {
-        if(c.numero === parseFloat(this.numeroAtual)){
+        if (c.numero === parseFloat(this.numeroAtual)) {
           this.candidatoAtual = c;
         }
       });
     }
-    if(this.selecionado === this.countNumero && this.digito3 !== -1  &&  this.digito4 === -2 &&  this.digito5 === -2) {
+    if (this.selecionado === this.countNumero && this.digito3 !== -1 && this.digito4 === -2 && this.digito5 === -2) {
       this.numeroAtual = this.digito1.toString() + this.digito2.toString() + this.digito3.toString();
       this.candidatosDoCargo.filter((c) => {
-        if(c.numero === parseFloat(this.numeroAtual)){
+        if (c.numero === parseFloat(this.numeroAtual)) {
           this.candidatoAtual = c;
         }
       });
     }
-    if(this.selecionado === this.countNumero && this.digito4 !== -1 &&  this.digito5 === -2) {
+    if (this.selecionado === this.countNumero && this.digito4 !== -1 && this.digito5 === -2) {
       this.numeroAtual = this.digito1.toString() + this.digito2.toString() + this.digito3.toString() + this.digito4.toString();
       this.candidatosDoCargo.filter((c) => {
-        if(c.numero === parseFloat(this.numeroAtual)){
+        if (c.numero === parseFloat(this.numeroAtual)) {
           this.candidatoAtual = c;
         }
       });
     }
-    if(this.selecionado === this.countNumero && this.digito5 !== -1) {
+    if (this.selecionado === this.countNumero && this.digito5 !== -1) {
       this.numeroAtual = this.digito1.toString() + this.digito2.toString() + this.digito3.toString() + this.digito4.toString() + this.digito5.toString();
       this.candidatosDoCargo.filter((c) => {
-        if(c.numero === parseFloat(this.numeroAtual)){
+        if (c.numero === parseFloat(this.numeroAtual)) {
           this.candidatoAtual = c;
         }
       });
@@ -148,16 +144,16 @@ export class VotarComponent implements OnInit {
   }
 
   tecla(tipo: string) {
-    if(tipo === 'branco') {
+    if (tipo === 'branco') {
       const voto: IVotoRequest = {
-        idEleitor: this.idEleitor,
+        idEleitor: this.eleitor?.id,
         idCargo: this.cargoAtual.id,
         idCandidato: 0,
         emBranco: true,
         nulo: false,
       }
       new Audio('assets/audio/votado.mp3').play();
-      this.eleitoresService.votar(voto).subscribe(() => {});
+      this.eleitoresService.votar(voto).subscribe(() => { });
       this.countCargos += 1;
       this.zerarNumeros();
       this.candidatoAtual = null;
@@ -165,9 +161,9 @@ export class VotarComponent implements OnInit {
       this.votacao();
     }
 
-    if(tipo === 'confirma') {
+    if (tipo === 'confirma') {
       let voto: IVotoRequest = {
-        idEleitor: this.idEleitor,
+        idEleitor: this.eleitor?.id,
         idCargo: this.cargoAtual.id,
         idCandidato: 0,
         emBranco: false,
@@ -179,7 +175,7 @@ export class VotarComponent implements OnInit {
         voto.nulo = true;
       }
       new Audio('assets/audio/votado.mp3').play();
-      this.eleitoresService.votar(voto).subscribe(() => {});
+      this.eleitoresService.votar(voto).subscribe(() => { });
       this.countCargos += 1;
       this.zerarNumeros();
       this.candidatoAtual = null;
@@ -187,7 +183,7 @@ export class VotarComponent implements OnInit {
       this.votacao();
     }
 
-    if(tipo === 'corrige') {
+    if (tipo === 'corrige') {
       this.zerarNumeros()
       this.candidatoAtual = null;
       this.selecionado = 0;
@@ -195,22 +191,22 @@ export class VotarComponent implements OnInit {
   }
 
   zerarNumeros() {
-    if(this.countNumero === 2) {
+    if (this.countNumero === 2) {
       this.digito1 = -1;
       this.digito2 = -1;
     }
-    if(this.countNumero === 3) {
+    if (this.countNumero === 3) {
       this.digito1 = -1;
       this.digito2 = -1;
       this.digito3 = -1;
     }
-    if(this.countNumero === 4) {
+    if (this.countNumero === 4) {
       this.digito1 = -1;
       this.digito2 = -1;
       this.digito3 = -1;
       this.digito4 = -1;
     }
-    if(this.countNumero === 5) {
+    if (this.countNumero === 5) {
       this.digito1 = -1;
       this.digito2 = -1;
       this.digito3 = -1;
@@ -218,4 +214,5 @@ export class VotarComponent implements OnInit {
       this.digito5 = -1;
     }
   }
+
 }

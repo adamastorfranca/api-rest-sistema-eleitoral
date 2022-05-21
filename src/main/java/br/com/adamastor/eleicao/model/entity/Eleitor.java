@@ -46,5 +46,8 @@ public class Eleitor implements Serializable {
 	
 	@Column(name = "ATIVO", nullable = false)
 	private boolean ativo;
+	
+	@Column(name = "VOTOU")
+	private boolean votou;
 
 }

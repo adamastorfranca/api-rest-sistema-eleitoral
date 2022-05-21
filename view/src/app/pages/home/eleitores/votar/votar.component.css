@@ -1,13 +1,25 @@
 #total {
   background-color: rgb(195, 195, 195);
   padding: 15px;
-  width: 95%;
+  width: 85%;
+  border: 2px solid black;
 }
 
 #tela {
   background-color: white;
   padding: 5%;
-  margin: 5% 2% 5% 5%;
+  margin: 4% 2% 5% 5%;
+  width: 93%;
+  height: 90%;
+  border: 2px solid black;
+}
+
+#numeros {
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  padding: 5%;
+  margin: 5% 5% 5% 2%;
   width: 93%;
   height: 90%;
 }
@@ -22,34 +34,41 @@
   height: 40px;
 }
 
-#numeros {
-  background-color: black;
-  color: white;
+h1 {
+  text-transform: uppercase;
   font-weight: bold;
-  padding: 5%;
-  margin: 5% 5% 5% 2%;
-  width: 93%;
-  height: 90%;
+  font-size: 160px;
+  margin-top: 60px;
 }
 
 h4 {
   font-weight: bold;
 }
 
+h5 {
+  padding: 5% 0;
+  font-weight: bold;
+  font-size: 25px
+}
+
 h6 {
   font-weight: bold;
-  padding-top: 15px;
+  padding-top: 1%;
+}
+
+a {
+  max-width: 80px;
+  text-transform: uppercase;
+  margin: 0 45%;
+}
+
+#candidato {
+  padding: 20px 0px 0px 0px;
 }
 
 #partido {
   padding-top: 0px;
   font-size: 20px;
-}
-
-h5 {
-  padding: 5% 0;
-  font-weight: bold;
-  font-size: 25px
 }
 
 .digito {
@@ -96,5 +115,5 @@ h5 {
 }
 
 img {
-  max-width: 50%;
+  max-width: 35%;
 }

@@ -48,7 +48,7 @@ table {
 header {
   padding: 10px 0;
   background-color: rgba(46, 158, 46, 0.598);
-  border-bottom: 3px solid white;
+  border-bottom: 3px solid black;
 }
 
 .navbar-brand {

@@ -25,6 +25,7 @@ public class EleitorRequestDTO implements Serializable {
 		if(!ativo.booleanValue()) {
 			e.setDesativadoEm(LocalDateTime.now());
 		}
+		e.setVotou(false);
 		e.setAtivo(ativo);
 		return e;
 	}

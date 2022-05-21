@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { EleitoresService } from 'src/app/services/eleitores.service';
 import { IEleitorResponse } from 'src/app/interfaces/eleitor-response';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-exibir-deletar',
@@ -16,7 +17,8 @@ export class EleitorExibirDeletarComponent implements OnInit {
   filterCpf: string = '';
 
   constructor(
-    private service: EleitoresService
+    private service: EleitoresService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -67,5 +69,12 @@ export class EleitorExibirDeletarComponent implements OnInit {
       var elemento = target as HTMLInputElement;
       this.filterCpf = elemento.value;
     }
+  }
+
+  votar(idEleitor: number) {
+    this.service.buscar(idEleitor, '', '', '').subscribe((result) => {
+      this.service.eleitor = result[0];
+      this.router.navigate(['/votar']);
+    });
   }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 import { IEleitorRequest } from '../interfaces/eleitor-request';
-import { Observable } from 'rxjs';
 import { IEleitorResponse } from '../interfaces/eleitor-response';
 import { IVotoRequest } from '../interfaces/voto-request';
 

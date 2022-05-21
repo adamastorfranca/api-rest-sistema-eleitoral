@@ -21,8 +21,14 @@ input {
   padding: 5px;
 }
 
+#filterCpf {
+  margin-left: 30px;
+}
+
 table {
   vertical-align: middle;
+  border: 2px solid black;
+  font-weight: bold;
 }
 
 .thead-eleitores {

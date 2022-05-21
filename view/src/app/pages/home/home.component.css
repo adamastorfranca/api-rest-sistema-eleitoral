@@ -30,15 +30,21 @@
   color: rgb(0, 0, 0);
 }
 
-.container-white {
-  background-color: rgba(0, 21, 184, 0.663);
+#tela {
+  background-color: rgba(88, 101, 203, 0.997);
   text-align: center;
   margin: 30px 30px 0 30px;
   padding: 5%;
   width: 95%;
+  min-height: 722px;
   border-radius: 15px;
+  border: 3px solid black;
 }
 
 footer {
-  height: 30px;
+  background-color: rgba(46, 158, 46, 0.598);
+  height: 90px;
+  border-top: 3px solid black;
+  width: 100%;
+  margin-top: 36px;
 }

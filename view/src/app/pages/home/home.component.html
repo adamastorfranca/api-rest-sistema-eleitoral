@@ -8,15 +8,16 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <a type="button" class="links" routerLink="">Página inicial</a>
-            <a type="button" class="links" routerLink="buscar-eleitor">Votar</a>
+            <a type="button" class="links" routerLink="eleitores/buscar">Votar</a>
             <div class="dropdown" id="primeiro">
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-inicio" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Resultados
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" routerLink="eleitores/cadastro">Individual</a></li>
-                  <li><a class="dropdown-item" routerLink="eleitores">Geral</a></li>
+                  <li><a class="dropdown-item" routerLink="resultados/vencedores">Vencedores</a></li>
+                  <li><a class="dropdown-item" routerLink="candidatos/buscar">Individual</a></li>
+                  <li><a class="dropdown-item" routerLink="cargos/selecionar">Cargo</a></li>
                 </ul>
               </li>
             </div>
@@ -59,7 +60,7 @@
   </nav>
 </header>
 <main>
-  <div class="container-white">
+  <div class="container-fluid align-items-center" id="tela">
     <router-outlet></router-outlet>
   </div>
 </main>

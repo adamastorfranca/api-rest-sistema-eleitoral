@@ -9,8 +9,8 @@
   </div>
   <div class="col-6">
     <form>
-      <label>Filtrar por CPF: </label>
-      <input class="rounded" type="text" autofocus (keyup)="cpfDigitado($event.target)">
+      <label  id="filterCpf">Filtrar por CPF: </label>
+      <input class="rounded" type="text" (keyup)="cpfDigitado($event.target)">
     </form>
   </div>
 </div>
@@ -25,17 +25,18 @@
       <th scope="col" class="thead-eleitores">Data cadastro</th>
       <th scope="col" class="thead-eleitores">Data alteração</th>
       <th scope="col" class="thead-eleitores">Data desativação</th>
-      <th scope="col" class="thead-cargos">Ações</th>
+      <th scope="col" class="thead-eleitores">Votou</th>
+      <th scope="col" class="thead-eleitores">Ações</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let eleitor of eleitores | filterNomeEleitor: filterNome | filterCpfEleitor: filterCpf">
       <td>{{ eleitor.id }}</td>
       <td id="nome">{{ eleitor.nome }}</td>
-      <td>{{ eleitor.cpf }}</td>
+      <td>{{ eleitor.cpf | filterFormatarCpf }}</td>
 
-      <td *ngIf="eleitor.ativo === true">Ativo</td>
-      <td *ngIf="eleitor.ativo === false">Inativo</td>
+      <td *ngIf="eleitor.ativo">Ativo</td>
+      <td *ngIf="!eleitor.ativo">Inativo</td>
 
       <td>{{ eleitor.criadoEm | date: 'short' }}</td>
 
@@ -44,12 +45,16 @@
 
       <td *ngIf="eleitor.desativadoEm !== null">{{ eleitor.desativadoEm | date: 'short' }}</td>
       <td *ngIf="eleitor.desativadoEm === null">-</td>
+
+      <td *ngIf="eleitor.votou" style="color: green;">Sim</td>
+      <td *ngIf="!eleitor.votou" style="color: red;">Não</td>
+
       <td>
         <div class="dropdown">
           <button class="btn btn-dark dropdown-toggle" style="background-color: black;" type="button"
             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a type="button" class="dropdown-item" *ngIf="eleitor.ativo" [routerLink]="['/votar', eleitor.id]">Votar</a></li>
+            <li *ngIf="!eleitor.votou"><a type="button" class="dropdown-item" *ngIf="eleitor.ativo" (click)="votar(eleitor.id)">Votar</a></li>
             <li><a type="button" class="dropdown-item" [routerLink]="['/eleitores/editar', eleitor.id]">Editar</a></li>
             <li><a type="button" class="dropdown-item" (click)="deletar(eleitor.id)">Deletar</a></li>
           </ul>

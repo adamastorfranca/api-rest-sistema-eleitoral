@@ -27,6 +27,8 @@ public class EleitorResponseDTO implements Serializable {
 
 	private boolean ativo;
 	
+	private boolean votou;
+	
 	public EleitorResponseDTO(Eleitor eleitor) {
 		this.id = eleitor.getId();
 		this.nome = eleitor.getNome();
@@ -35,6 +37,7 @@ public class EleitorResponseDTO implements Serializable {
 		this.alteradoEm = eleitor.getAlteradoEm();
 		this.desativadoEm = eleitor.getDesativadoEm();
 		this.ativo = eleitor.isAtivo();
+		this.votou = eleitor.isVotou();
 	}
 	
 	public static List<EleitorResponseDTO> converter(List<Eleitor> eleitores){

@@ -118,7 +118,7 @@ public class EleitorService {
 			throw new AplicacaoException("ID informado não está cadastrado");
 		}
 		Eleitor e = resultado.get();
-		if (votoService.verificarSeEleitorVotou(e)) {
+		if (e.isVotou()) {
 			throw new AplicacaoException("Eleitor não pode ser deletado pois já votou");
 		}
 		repository.delete(e);
@@ -135,14 +135,4 @@ public class EleitorService {
 		}
 		return e;
 	}
-
-	public void cadastrarCandidatoComoEleitor(EleitorRequestDTO formulario) {
-		Optional<Eleitor> resultado = repository.findByCpf(formulario.getCpf());
-		if (resultado.isPresent()) {
-			return;
-		}
-		Eleitor e = formulario.gerarEleitor();
-		repository.save(e);
-	}
-
 }

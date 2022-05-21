@@ -29,6 +29,7 @@ public class CandidatoRequestDTO implements Serializable {
 		c.setCpf(cpf);
 		c.setNumero(numero);
 		c.setLegenda(legenda.toUpperCase());
+		c.setVotado(false);
 		c.setAtivo(ativo);
 		c.setCriadoEm(LocalDateTime.now());
 		return c;

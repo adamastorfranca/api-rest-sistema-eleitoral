@@ -21,6 +21,12 @@ import { FilterCargoCandidato } from './candidatos/exibir-deletar/filter-cargo-c
 import { CandidatoCadastrarEditarComponent } from './candidatos/cadastrar-editar/cadastrar-editar.component';
 import { BuscarEleitorParaVotarComponent } from './eleitores/buscar-eleitor-para-votar/buscar-eleitor.component';
 import { VotarComponent } from './eleitores/votar/votar.component';
+import { RelatorioGeralComponent } from './candidatos/relatorio/relatorio-geral/relatorio-geral.component';
+import { RelatorioIndividualComponent } from './candidatos/relatorio/relatorio-individual/relatorio-individual.component';
+import { BuscarCandidatoComponent } from './candidatos/relatorio/relatorio-individual/buscar-candidato/buscar-candidato.component';
+import { SelecionarCargoComponent } from './candidatos/relatorio/relatorio-cargo/selecionar-cargo/selecionar-cargo.component';
+import { FilterFormatarCpf } from './inicio/filter-formatar-cpf.pipe';
+import { RelatorioCargoComponent } from './candidatos/relatorio/relatorio-cargo/relatorio-cargo.component';
 
 @NgModule({
   declarations: [
@@ -36,9 +42,15 @@ import { VotarComponent } from './eleitores/votar/votar.component';
     FilterCpfCandidato,
     FilterPartidoCandidato,
     FilterCargoCandidato,
+    FilterFormatarCpf,
     CandidatoCadastrarEditarComponent,
     BuscarEleitorParaVotarComponent,
     VotarComponent,
+    RelatorioGeralComponent,
+    RelatorioIndividualComponent,
+    BuscarCandidatoComponent,
+    SelecionarCargoComponent,
+    RelatorioCargoComponent,
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,22 @@
+.container {
+  margin: 7% 0 ;
+}
+
+h5 {
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+table {
+  margin: 0 35% 2% 35%;
+  width: 30%;
+  vertical-align: middle;
+  vertical-align: middle;
+  border: 2px solid black;
+}
+
+#botao-confirmacao {
+  margin: 25px 10px;
+}

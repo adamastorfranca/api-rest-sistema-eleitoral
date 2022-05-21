@@ -1,5 +1,7 @@
 package br.com.adamastor.eleicao.model.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +18,8 @@ public interface VotoRepository extends JpaRepository<Voto, VotoId>{
 	boolean existsByIdEleitor(Eleitor eleitor);
 	boolean existsByCandidato(Candidato candidato);
 	Integer countByCandidato(Candidato candidato);
+	List<Voto> findByIdCargoId(Long idCargo);
+	Integer countByEmBrancoIsTrueAndIdCargoId(Long idCargo);
+	Integer countByNuloIsTrueAndIdCargoId(Long idCargo);
 
 }

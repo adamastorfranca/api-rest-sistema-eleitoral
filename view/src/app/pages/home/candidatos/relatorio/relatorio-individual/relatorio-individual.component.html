@@ -1,0 +1,32 @@
+<div class="container">
+  <h5>Resultado</h5>
+
+  <table class="table table-light table-striped">
+    <thead>
+      <tr>
+        <td>Cargo</td>
+        <th scope="col">{{ relatorio.nomeCargo }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Nome</td>
+        <th>{{ relatorio.nomeCandidato }}</th>
+      </tr>
+      <tr>
+        <td>Número</td>
+        <td>{{ relatorio.numeroCandidato }}</td>
+      </tr>
+      <tr>
+        <td>Partido</td>
+        <td>{{ relatorio.legendaCandidato }}</td>
+      </tr>
+      <tr>
+        <td>Votos</td>
+        <th>{{ relatorio.votos }}</th>
+      </tr>
+    </tbody>
+  </table>
+
+  <a type="button" class="btn btn-dark" id="botao-confirmacao" routerLink="">Voltar</a>
+</div>

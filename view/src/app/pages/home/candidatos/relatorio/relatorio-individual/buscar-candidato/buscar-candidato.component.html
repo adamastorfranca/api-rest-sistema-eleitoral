@@ -1,0 +1,22 @@
+<div class="container">
+  <h5>Buscar candidato</h5>
+
+  <div id="form">
+    <form [formGroup]="formulario" (ngSubmit)="buscarEleitor()">
+      <fieldset>
+        <label for="numero" class="form-label">Número</label>
+        <input type="number" class="form-control" formControlName="numero" required>
+
+        <div *ngIf="
+          formulario.get('numero')?.errors?.['required'] &&
+          formulario.get('numero')?.touched" class="form-text text-danger">
+          Campo obrigatório
+        </div>
+      </fieldset>
+
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-dark" [disabled]="formulario.invalid">Buscar</button>
+      </div>
+    </form>
+  </div>
+</div>

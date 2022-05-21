@@ -22,6 +22,7 @@ label {
 input {
   width: 70%;
   padding: 5px;
+  padding: 5px;
 }
 
 .segunda-linha {
@@ -30,6 +31,8 @@ input {
 
 table {
   vertical-align: middle;
+  border: 2px solid black;
+  font-weight: bold;
 }
 
 .thead-candidatos {

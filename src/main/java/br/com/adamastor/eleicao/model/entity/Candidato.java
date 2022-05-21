@@ -53,6 +53,9 @@ public class Candidato implements Serializable {
 	@Column(name = "ATIVO", nullable = false)
 	private boolean ativo;
 	
+	@Column(name = "VOTADO")
+	private boolean votado;
+	
 	@ManyToOne
 	@JoinColumn(name = "FK_CARGO")
 	private Cargo cargo;

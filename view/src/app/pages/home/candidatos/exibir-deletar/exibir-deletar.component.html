@@ -10,7 +10,7 @@
   <div class="col-6">
     <form>
       <label  id="filterCpf">Filtrar por CPF: </label>
-      <input class="rounded" type="text" autofocus (keyup)="cpfDigitado($event.target)">
+      <input class="rounded" type="text" (keyup)="cpfDigitado($event.target)">
     </form>
   </div>
 </div>
@@ -49,7 +49,7 @@
     <tr *ngFor="let candidato of candidatos | filterNomeCandidato: filterNome | filterCpfCandidato: filterCpf | filterCargoCandidato: filterCargo | filterPartidoCandidato: filterPartido">
       <td>{{ candidato.id }}</td>
       <td id="nome">{{ candidato.nome }}</td>
-      <td>{{ candidato.cpf }}</td>
+      <td>{{ candidato.cpf | filterFormatarCpf }}</td>
       <td>{{ candidato.cargo.nome }}</td>
       <td>{{ candidato.numero }}</td>
       <td>{{ candidato.legenda }}</td>
@@ -69,6 +69,7 @@
           <button class="btn btn-dark dropdown-toggle" style="background-color: black;" type="button"
             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a type="button" class="dropdown-item" [routerLink]="['/resultados/individual', candidato.id]">Resultado</a></li>
             <li><a type="button" class="dropdown-item" [routerLink]="['/candidatos/editar', candidato.id]">Editar</a></li>
             <li><a type="button" class="dropdown-item" (click)="deletar(candidato.id)">Deletar</a></li>
           </ul>

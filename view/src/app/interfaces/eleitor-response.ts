@@ -3,6 +3,7 @@ export interface IEleitorResponse {
   nome: string;
   cpf: string;
   ativo: boolean;
+  votou: boolean;
   criadoEm: Date;
   alteradoEm: Date;
   desativadoEm: Date;

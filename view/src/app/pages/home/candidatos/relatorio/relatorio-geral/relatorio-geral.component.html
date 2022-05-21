@@ -1,0 +1,33 @@
+<div class="container">
+  <h5>Vencedores</h5>
+  <ng-container *ngFor="let vencedor of relatorio">
+    <table class="table table-light table-striped">
+      <thead>
+        <tr>
+          <th>Cargo</th>
+          <th scope="col">{{ vencedor.nomeCargo }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Nome</td>
+          <th>{{ vencedor.nomeCandidato }}</th>
+        </tr>
+        <tr>
+          <td>Número</td>
+          <td>{{ vencedor.numeroCandidato }}</td>
+        </tr>
+        <tr>
+          <td>Partido</td>
+          <td>{{ vencedor.legendaCandidato }}</td>
+        </tr>
+        <tr>
+          <td>Votos</td>
+          <th>{{ vencedor.votos }}</th>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
+  <a type="button" class="btn btn-dark" id="botao-confirmacao" routerLink="">Voltar</a>
+</div>

@@ -7,10 +7,10 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
-import br.com.adamastor.eleicao.model.dto.RelatorioGeralVotacaoDTO;
-import br.com.adamastor.eleicao.model.dto.RelatorioIndividualVotacaoDTO;
+import br.com.adamastor.eleicao.model.dto.RelatorioVotacaoResponseDTO;
 import br.com.adamastor.eleicao.model.dto.VotoRequestDTO;
 import br.com.adamastor.eleicao.model.entity.Candidato;
 import br.com.adamastor.eleicao.model.entity.Cargo;
@@ -32,110 +32,145 @@ public class VotoService {
 	@Autowired
 	private CargoService cargoService;
 
+	@CacheEvict(value = "buscarEleitores", allEntries = true)
 	@Transactional(rollbackOn = AplicacaoException.class)
 	public void votar(VotoRequestDTO voto) {
 		Voto v = new Voto();
 		VotoId vId = new VotoId();
 		Cargo cargo = cargoService.buscarCargoDaVotacao(voto.getIdCargo());
-		vId.setEleitor(eleitorService.buscarEleitorParaVotar(voto.getIdEleitor()));
+		Eleitor e = eleitorService.buscarEleitorParaVotar(voto.getIdEleitor());
+		vId.setEleitor(e);
 		vId.setCargo(cargo);
 		v.setId(vId);
-		
 		Candidato c = candidatoService.buscarCandidatoParaSerVotado(voto.getIdCandidato());
-		if(c != null && c.getCargo().equals(cargo)) {
+		if (c != null && c.getCargo().equals(cargo)) {
 			v.setCandidato(c);
 			v.setEmBranco(false);
 			v.setNulo(false);
 		} else {
-			if(voto.isEmBranco()) {
+			if (voto.isEmBranco()) {
 				v.setCandidato(null);
 				v.setEmBranco(true);
 				v.setNulo(false);
 			}
-			if(voto.isNulo()) {
+			if (voto.isNulo()) {
 				v.setCandidato(null);
 				v.setNulo(true);
 				v.setEmBranco(false);
 			}
 		}
-	
+		if (!e.isVotou()) {
+			e.setVotou(true);
+		}
+		if (c != null && !c.isVotado()) {
+			c.setVotado(true);
+		}
 		v.setData(LocalDateTime.now());
 		repository.save(v);
 	}
 
-	public List<RelatorioGeralVotacaoDTO> gerarRelatorioGeral() {
-		List<Candidato> candidatos = candidatosParticipantes();
-		List<RelatorioGeralVotacaoDTO> vencedoresPorCargo = new ArrayList<>();
-		RelatorioGeralVotacaoDTO temp;
+	public List<RelatorioVotacaoResponseDTO> gerarRelatorioPorCargo(Long id) {
+		List<Candidato> candidatos = candidatosParticipantes(id);
+		List<RelatorioVotacaoResponseDTO> relatorio = new ArrayList<>();
+		int  votosCandidato;
+		for(Candidato c : candidatos) {
+			votosCandidato = repository.countByCandidato(c);
+			relatorio.add(gerarInformacoes(c, votosCandidato));
+		}
+		Candidato temp = new Candidato();
+		temp.setId(-1L);
+		votosCandidato = repository.countByEmBrancoIsTrueAndIdCargoId(id);
+		relatorio.add(gerarInformacoes(temp, votosCandidato));
+		temp.setId(-2L);
+		votosCandidato = repository.countByNuloIsTrueAndIdCargoId(id);
+		relatorio.add(gerarInformacoes(temp, votosCandidato));
+		return relatorio;
+	}
+
+	public List<RelatorioVotacaoResponseDTO> gerarRelatorioGeral() {
+		List<Candidato> candidatos = candidatosParticipantes(null);
+		List<RelatorioVotacaoResponseDTO> vencedoresPorCargo = new ArrayList<>();
+		RelatorioVotacaoResponseDTO temp;
 		for (Candidato c : candidatos) {
-			List<RelatorioGeralVotacaoDTO> listaCloneParaIterar = new ArrayList<>(vencedoresPorCargo);
+			
+			List<RelatorioVotacaoResponseDTO> listaCloneParaIterar = new ArrayList<>(vencedoresPorCargo);
 			int votosCandidato = repository.countByCandidato(c);
 			if (vencedoresPorCargo.isEmpty()) {
 				vencedoresPorCargo.add(gerarInformacoes(c, votosCandidato));
-			}		
-			for (RelatorioGeralVotacaoDTO r : listaCloneParaIterar) {
-				if (!r.getIdCargo().equals(c.getCargo().getId())) {
-					temp = gerarInformacoes(c, votosCandidato);
-					if(!vencedoresPorCargo.contains(temp)) {
-						vencedoresPorCargo.add(temp);
-					}
-				}
-				if (r.getIdCargo().equals(c.getCargo().getId()) && r.getVotos() < votosCandidato ) {
-					vencedoresPorCargo.remove(r);
-					temp = gerarInformacoes(c, votosCandidato);					
-					if(!vencedoresPorCargo.contains(temp)) {
-						vencedoresPorCargo.add(temp);
-					}
-				}
 			}
+			for (RelatorioVotacaoResponseDTO r : listaCloneParaIterar) {
+				if (!r.getNomeCargo().equals(c.getCargo().getNome())) {
+					temp = gerarInformacoes(c, votosCandidato);
+					if (!vencedoresPorCargo.contains(temp)) {
+						vencedoresPorCargo.add(temp);
+					}
+				}
+				if (r.getNomeCargo().equals(c.getCargo().getNome()) && r.getVotos() < votosCandidato) {
+					vencedoresPorCargo.remove(r);
+					temp = gerarInformacoes(c, votosCandidato);
+					if (!vencedoresPorCargo.contains(temp)) {
+						vencedoresPorCargo.add(temp);
+					}
+				}					
+			}	
 		}
 		return vencedoresPorCargo;
 	}
-	
-	public RelatorioIndividualVotacaoDTO gerarRelatorioIndividual(Long id) {
+
+	public RelatorioVotacaoResponseDTO gerarRelatorioIndividual(Long id) {
 		Candidato c = candidatoService.buscarCandidatoParaSerVotado(id);
-		RelatorioIndividualVotacaoDTO r = new RelatorioIndividualVotacaoDTO();
-		r.setNomeCandidato(c.getNome());
+		RelatorioVotacaoResponseDTO r = new RelatorioVotacaoResponseDTO();
 		r.setNomeCargo(c.getCargo().getNome());
+		r.setNomeCandidato(c.getNome());
+		r.setNumeroCandidato(c.getNumero());
+		r.setLegendaCandidato(c.getLegenda());
 		r.setVotos(repository.countByCandidato(c));
 		return r;
 	}
 
-	private List<Candidato> candidatosParticipantes() {
+	private List<Candidato> candidatosParticipantes(Long idCargo) {
 		List<Candidato> candidatos = new ArrayList<>();
-		List<Voto> votos = repository.findAll();
+		List<Voto> votos;	
+		if(idCargo == null) {
+			votos = repository.findAll();
+		} else {
+			votos = repository.findByIdCargoId(idCargo);
+		}
 		for (Voto v : votos) {
-			if (candidatos.isEmpty()) {
-				candidatos.add(v.getCandidato());
-			} else {
-				if (!candidatos.contains(v.getCandidato())) {
+			if (v.getCandidato() != null) {
+				if (candidatos.isEmpty()) {
 					candidatos.add(v.getCandidato());
+				} else {
+					if (!candidatos.contains(v.getCandidato())) {
+						candidatos.add(v.getCandidato());
+					}
 				}
 			}
 		}
 		return candidatos;
 	}
 
-	private RelatorioGeralVotacaoDTO gerarInformacoes(Candidato c, int votos) {
-		RelatorioGeralVotacaoDTO r = new RelatorioGeralVotacaoDTO();
-		r.setIdCargo(c.getCargo().getId());
-		r.setNomeCargo(c.getCargo().getNome());
+	private RelatorioVotacaoResponseDTO gerarInformacoes(Candidato c, int votos) {
+		RelatorioVotacaoResponseDTO r = new RelatorioVotacaoResponseDTO();
+		if (c.getId() > 0) {
+			r.setNomeCargo(c.getCargo().getNome());
+			r.setNomeCandidato(c.getNome());
+			r.setNumeroCandidato(c.getNumero());
+			r.setLegendaCandidato(c.getLegenda());
+		} else {
+			if (c.getId() == -1) {
+				r.setNomeCandidato("VOTO EM BRANCO");
+			}
+			if (c.getId() == -2) {
+				r.setNomeCandidato("VOTO NULO");
+			}
+		}
 		r.setVotos(votos);
-		r.setIdCandidatoVencedor(c.getId());
-		r.setNomeCandidatoVencedor(c.getNome());
 		return r;
-	}
-
-	public boolean verificarSeEleitorVotou(Eleitor eleitor) {
-		return repository.existsByIdEleitor(eleitor);
 	}
 
 	public boolean verificarSeCargoEstaNaEleicao(Cargo cargo) {
 		return repository.existsByIdCargo(cargo);
-	}
-
-	public boolean verificarSeCandidatoRecebeuVoto(Candidato candidato) {
-		return repository.existsByCandidato(candidato);
 	}
 
 }
