@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { IRelatorioVotacaoResponse } from 'src/app/interfaces/relatorio-votacao-response';
-import { CandidatosService } from 'src/app/services/candidatos.service';
+import { CargosService } from 'src/app/services/cargos.service';
 
 @Component({
   selector: 'app-relatorio-cargo',
@@ -12,19 +12,28 @@ import { CandidatosService } from 'src/app/services/candidatos.service';
 export class RelatorioCargoComponent implements OnInit {
 
   relatorio: IRelatorioVotacaoResponse[] = [];
+  totalDeVotos: number = 0;
 
   constructor(
-    private service: CandidatosService,
+    private service: CargosService,
     private activedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     const id = parseFloat(this.activedRoute.snapshot.paramMap.get('id') as string);
-    this.service.relatorioDoCargo(id).subscribe((result) => {
+    this.service.relatorio(id).subscribe((result) => {
       this.relatorio = result;
+      this.calcularTotalDeVotos();
     }, (error) => {
       alert('Erro ao buscar relatório');
       console.error(error);
     });
+    this.calcularTotalDeVotos();
+  }
+
+  calcularTotalDeVotos() {
+    for(let i of this.relatorio) {
+      this.totalDeVotos = this.totalDeVotos + i.votos;
+    }
   }
 }

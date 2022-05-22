@@ -73,16 +73,11 @@ public class CandidatoRest {
 	
 	@GetMapping(value = "/relatorio", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<RelatorioVotacaoResponseDTO>> relatorioGeral() {
-		return new ResponseEntity<>(votoService.gerarRelatorioGeral(), HttpStatus.OK);
+		return new ResponseEntity<>(votoService.gerarRelatorioVencedores(), HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/relatorio/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<RelatorioVotacaoResponseDTO> relatorioIndividual(@PathVariable Long id) {
 		return new ResponseEntity<>(votoService.gerarRelatorioIndividual(id), HttpStatus.OK);
-	}
-	
-	@GetMapping(value = "/relatorio-cargo/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<RelatorioVotacaoResponseDTO>> relatorioCargo(@PathVariable Long id) {
-		return new ResponseEntity<>(votoService.gerarRelatorioPorCargo(id), HttpStatus.OK);
 	}
 }

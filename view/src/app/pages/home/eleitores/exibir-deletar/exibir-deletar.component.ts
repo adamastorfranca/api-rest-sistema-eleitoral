@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { EleitoresService } from 'src/app/services/eleitores.service';
 import { IEleitorResponse } from 'src/app/interfaces/eleitor-response';
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-exibir-deletar',
@@ -15,6 +16,9 @@ export class EleitorExibirDeletarComponent implements OnInit {
   eleitores: IEleitorResponse[] = [];
   filterNome: string = '';
   filterCpf: string = '';
+  blFilterCpf: boolean = false;
+  blFilterNome: boolean = false;
+  faX = faXmark;
 
   constructor(
     private service: EleitoresService,
@@ -36,8 +40,7 @@ export class EleitorExibirDeletarComponent implements OnInit {
 
   deletar(id: number) {
     Swal.fire({
-      title: 'Você está certo disso?',
-      text: "Tem certeza que deseja remover este eleitor?",
+      title: 'Tem certeza que deseja remover este eleitor?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Remover',
@@ -46,8 +49,7 @@ export class EleitorExibirDeletarComponent implements OnInit {
       if (result.isConfirmed) {
         this.service.deletar(id).subscribe(() => {
           Swal.fire({
-            title: 'Removido!',
-            text: 'Eleitor removido com sucesso!',
+            title: 'Eleitor removido com sucesso!',
             icon: 'success'
           }).then(() => this.listarTodos());
         }, error => {
@@ -74,7 +76,7 @@ export class EleitorExibirDeletarComponent implements OnInit {
   votar(idEleitor: number) {
     this.service.buscar(idEleitor, '', '', '').subscribe((result) => {
       this.service.eleitor = result[0];
-      this.router.navigate(['/votar']);
+      this.router.navigate(['eleitores/votar']);
     });
   }
 }

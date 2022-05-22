@@ -52,8 +52,4 @@ export class CandidatosService {
   relatorioIndividual(idCandidato: number) {
     return this.http.get<IRelatorioVotacaoResponse>(`${this.api}/${this.endpoint}/relatorio/${idCandidato}`);
   }
-
-  relatorioDoCargo(idCargo: number) {
-    return this.http.get<IRelatorioVotacaoResponse[]>(`${this.api}/${this.endpoint}/relatorio-cargo/${idCargo}`);
-  }
 }

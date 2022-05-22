@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 import { ICargoRequest as ICargoRequest } from '../interfaces/cargo-request';
-import { Observable } from 'rxjs';
 import { ICargoResponse } from '../interfaces/cargo-response';
-import { ActivatedRoute } from '@angular/router';
+import { IRelatorioVotacaoResponse } from '../interfaces/relatorio-votacao-response';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,6 @@ export class CargosService {
 
   constructor(
     private http: HttpClient,
-    private activedRoute: ActivatedRoute
   ) { }
 
   cadastrar(cargo: ICargoRequest){
@@ -40,4 +39,7 @@ export class CargosService {
     return this.http.get<ICargoResponse[]>(`${this.api}/${this.endpoint}`, {params: params});
   }
 
+  relatorio(idCargo: number) {
+    return this.http.get<IRelatorioVotacaoResponse[]>(`${this.api}/${this.endpoint}/relatorio/${idCargo}`);
+  }
 }

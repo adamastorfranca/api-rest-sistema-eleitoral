@@ -17,9 +17,8 @@ public interface VotoRepository extends JpaRepository<Voto, VotoId>{
 	boolean existsByIdCargo(Cargo cargo);
 	boolean existsByIdEleitor(Eleitor eleitor);
 	boolean existsByCandidato(Candidato candidato);
-	Integer countByCandidato(Candidato candidato);
 	List<Voto> findByIdCargoId(Long idCargo);
+	Integer countByCandidato(Candidato candidato);
 	Integer countByEmBrancoIsTrueAndIdCargoId(Long idCargo);
 	Integer countByNuloIsTrueAndIdCargoId(Long idCargo);
-
 }

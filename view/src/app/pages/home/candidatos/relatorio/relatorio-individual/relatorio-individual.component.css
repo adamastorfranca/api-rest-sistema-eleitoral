@@ -1,5 +1,5 @@
 .container {
-  margin: 7% 0 ;
+  margin: 7% 0;
 }
 
 h5 {
@@ -15,6 +15,7 @@ table {
   vertical-align: middle;
   vertical-align: middle;
   border: 2px solid black;
+  font-weight: bold;
 }
 
 #botao-confirmacao {

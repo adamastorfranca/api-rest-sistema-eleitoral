@@ -28,11 +28,7 @@ export class SelecionarCargoComponent implements OnInit {
 
   buscarCargos() {
     this.service.buscar('', '', '').subscribe((result) => {
-      result.filter((cargo: ICargoResponse) => {
-        if(cargo.ativo) {
-          this.cargos.push(cargo);
-        }
-      });
+      this.cargos = result;
     },
     (error) => {
       alert('Erro ao buscar cargos!')

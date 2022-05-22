@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.adamastor.eleicao.model.dto.CargoRequestDTO;
 import br.com.adamastor.eleicao.model.dto.CargoResponseDTO;
+import br.com.adamastor.eleicao.model.dto.RelatorioVotacaoResponseDTO;
 import br.com.adamastor.eleicao.model.entity.Cargo;
 import br.com.adamastor.eleicao.model.service.CargoService;
+import br.com.adamastor.eleicao.model.service.VotoService;
 
 @RestController
 @RequestMapping("rest/cargos")
@@ -31,6 +33,8 @@ public class CargoRest {
 
 	@Autowired
 	private CargoService service;
+	@Autowired
+	private VotoService votoService; 
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<CargoResponseDTO>> buscar(
@@ -66,5 +70,9 @@ public class CargoRest {
 		service.deletar(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
+	
+	@GetMapping(value = "/relatorio/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<RelatorioVotacaoResponseDTO>> relatorioCargo(@PathVariable Long id) {
+		return new ResponseEntity<>(votoService.gerarRelatorioPorCargo(id), HttpStatus.OK);
+	}
 }

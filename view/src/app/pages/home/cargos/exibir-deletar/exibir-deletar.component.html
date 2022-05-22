@@ -15,10 +15,10 @@
   <tbody>
     <tr *ngFor="let cargo of cargos">
       <td>{{ cargo.id }}</td>
-      <td id="nome">{{ cargo.nome }}</td>
+      <td>{{ cargo.nome }}</td>
 
-      <td *ngIf="cargo.ativo === true">Ativo</td>
-      <td *ngIf="cargo.ativo === false">Inativo</td>
+      <td *ngIf="cargo.ativo === true" style="color: green;">Ativo</td>
+      <td *ngIf="cargo.ativo === false" style="color: red;">Inativo</td>
 
       <td>{{ cargo.criadoEm | date: 'short' }}</td>
 
@@ -32,6 +32,7 @@
           <button class="btn btn-dark dropdown-toggle" style="background-color: black;" type="button"
             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li *ngIf="cargo.ativo"><a type="button" class="dropdown-item" [routerLink]="['/resultados/cargo', cargo.id]">Resultado</a></li>
             <li><a type="button" class="dropdown-item" [routerLink]="['/cargos/editar', cargo.id]">Editar</a></li>
             <li><a type="button" class="dropdown-item" (click)="deletar(cargo.id)">Deletar</a></li>
           </ul>

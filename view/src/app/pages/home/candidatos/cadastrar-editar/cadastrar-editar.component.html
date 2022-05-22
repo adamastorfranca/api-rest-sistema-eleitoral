@@ -17,7 +17,7 @@
       <fieldset>
         <label for="cpf" class="form-label">CPF</label>
         <input id="cpf" class="form-control" formControlName="cpf" *ngIf="(!cpfEstaDesabilitado)"/>
-        <input id="cpf" class="form-control" formControlName="cpf" *ngIf="(cpfEstaDesabilitado)"       style="background-color: gray;" />
+        <input id="cpf" class="form-control" formControlName="cpf" *ngIf="(cpfEstaDesabilitado)" style="background-color: rgb(180, 180, 180);" />
 
         <div *ngIf="
             formulario.get('cpf')?.errors?.['required'] &&
@@ -32,6 +32,7 @@
           <option value="" hidden>Selecione</option>
           <ng-container *ngFor="let cargo of cargos">
             <option *ngIf="cargo.ativo" [value]=cargo.id required>{{ cargo.nome }}</option>
+            <option *ngIf="!cargo.ativo" [value]=cargo.id disabled style="background-color: rgb(191, 191, 191);">{{ cargo.nome }}</option>
           </ng-container>
         </select>
 

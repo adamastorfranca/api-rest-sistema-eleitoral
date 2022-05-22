@@ -1,5 +1,5 @@
 <div class="container">
-  <h5>Buscar candidato</h5>
+  <h5>Escolher cargo</h5>
 
   <div id="form">
     <form [formGroup]="formulario" (ngSubmit)="selecionarCargo()">
@@ -9,6 +9,7 @@
           <option value="" hidden>Selecione</option>
           <ng-container *ngFor="let cargo of cargos">
             <option *ngIf="cargo.ativo" [value]=cargo.id required>{{ cargo.nome }}</option>
+            <option *ngIf="!cargo.ativo" [value]=cargo.id disabled style="background-color: rgb(191, 191, 191);">{{ cargo.nome }}</option>
           </ng-container>
         </select>
 
@@ -20,7 +21,7 @@
       </fieldset>
 
       <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-dark" [disabled]="formulario.invalid">Buscar</button>
+        <button type="submit" class="btn btn-dark" [disabled]="formulario.invalid">Avançar</button>
       </div>
     </form>
   </div>

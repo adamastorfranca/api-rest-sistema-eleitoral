@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
 import { HomeRoutingModule } from './home-routing.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CargoCadastrarEditarComponent } from './cargos/cadastrar-editar/cadastrar-editar.component';
 import { CargoExibirDeletarComponent } from './cargos/exibir-deletar/exibir-deletar.component';
 import { EleitorCadastrarEitarComponent } from './eleitores/cadastrar-editar/cadastrar-editar.component';
@@ -59,7 +60,8 @@ import { RelatorioCargoComponent } from './candidatos/relatorio/relatorio-cargo/
     RouterModule,
     HomeRoutingModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    FontAwesomeModule
   ]
 })
 export class HomeModule { }

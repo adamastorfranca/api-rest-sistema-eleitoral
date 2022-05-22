@@ -48,7 +48,7 @@ export class BuscarEleitorParaVotarComponent implements OnInit {
           }).then((result) => {
             if (result.isConfirmed) {
               this.service.eleitor = this.eleitor;
-              this.router.navigate(['/votar']);
+              this.router.navigate(['eleitores/votar']);
             } else {
               this.formulario.reset();
             }

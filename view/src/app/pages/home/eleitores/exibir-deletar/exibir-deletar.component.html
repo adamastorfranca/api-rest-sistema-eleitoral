@@ -1,18 +1,18 @@
 <h5>Eleitores</h5>
 
-<div class="row">
-  <div class="col-6">
-    <form>
-      <label>Filtrar por nome: </label>
-      <input class="rounded" type="text" autofocus (keyup)="nomeDigitado($event.target)">
-    </form>
+<div class="d-flex p-2">
+  <div class="dropdown">
+    <button class="btn btn-dark dropdown-toggle" style="background-color: black;" type="button"
+      id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Filtrar</button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+      <li><a (click)="blFilterNome = true" type="button" class="dropdown-item">Nome</a></li>
+      <li><a (click)="blFilterCpf = true" type="button" class="dropdown-item">CPF</a></li>
+    </ul>
   </div>
-  <div class="col-6">
-    <form>
-      <label  id="filterCpf">Filtrar por CPF: </label>
-      <input class="rounded" type="text" (keyup)="cpfDigitado($event.target)">
-    </form>
-  </div>
+  <input *ngIf="blFilterNome" class="rounded" type="text" (keyup)="nomeDigitado($event.target)">
+  <fa-icon *ngIf="blFilterNome" (click)="blFilterNome = false" (click)="filterNome = ''" id="x" [icon]="faX" type="button"></fa-icon>
+  <input *ngIf="blFilterCpf" class="rounded" type="text" (keyup)="cpfDigitado($event.target)">
+  <fa-icon *ngIf="blFilterCpf" (click)="blFilterCpf = false" (click)="filterCpf = ''" id="x" [icon]="faX" type="button"></fa-icon>
 </div>
 
 <table class="table table-light table-striped">
@@ -21,10 +21,10 @@
       <th scope="col" class="thead-eleitores">ID</th>
       <th scope="col" class="thead-eleitores">Nome</th>
       <th scope="col" class="thead-eleitores">CPF</th>
-      <th scope="col" class="thead-eleitores">Status</th>
       <th scope="col" class="thead-eleitores">Data cadastro</th>
       <th scope="col" class="thead-eleitores">Data alteração</th>
       <th scope="col" class="thead-eleitores">Data desativação</th>
+      <th scope="col" class="thead-eleitores">Status</th>
       <th scope="col" class="thead-eleitores">Votou</th>
       <th scope="col" class="thead-eleitores">Ações</th>
     </tr>
@@ -34,17 +34,16 @@
       <td>{{ eleitor.id }}</td>
       <td id="nome">{{ eleitor.nome }}</td>
       <td>{{ eleitor.cpf | filterFormatarCpf }}</td>
+      <td>{{ eleitor.criadoEm | date: 'dd/MM/yy - HH:mm' }}</td>
 
-      <td *ngIf="eleitor.ativo">Ativo</td>
-      <td *ngIf="!eleitor.ativo">Inativo</td>
-
-      <td>{{ eleitor.criadoEm | date: 'short' }}</td>
-
-      <td *ngIf="eleitor.alteradoEm !== null">{{ eleitor.alteradoEm | date: 'short' }}</td>
+      <td *ngIf="eleitor.alteradoEm !== null">{{ eleitor.alteradoEm | date: 'dd/MM/yy - HH:mm' }}</td>
       <td *ngIf="eleitor.alteradoEm === null">-</td>
 
-      <td *ngIf="eleitor.desativadoEm !== null">{{ eleitor.desativadoEm | date: 'short' }}</td>
+      <td *ngIf="eleitor.desativadoEm !== null">{{ eleitor.desativadoEm | date: 'dd/MM/yy - HH:mm' }}</td>
       <td *ngIf="eleitor.desativadoEm === null">-</td>
+
+      <td *ngIf="eleitor.ativo" style="color: green;">Apto</td>
+      <td *ngIf="!eleitor.ativo" style="color: red;">Inapto</td>
 
       <td *ngIf="eleitor.votou" style="color: green;">Sim</td>
       <td *ngIf="!eleitor.votou" style="color: red;">Não</td>
@@ -56,7 +55,7 @@
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li *ngIf="!eleitor.votou"><a type="button" class="dropdown-item" *ngIf="eleitor.ativo" (click)="votar(eleitor.id)">Votar</a></li>
             <li><a type="button" class="dropdown-item" [routerLink]="['/eleitores/editar', eleitor.id]">Editar</a></li>
-            <li><a type="button" class="dropdown-item" (click)="deletar(eleitor.id)">Deletar</a></li>
+            <li *ngIf="!eleitor.votou"><a type="button" class="dropdown-item" (click)="deletar(eleitor.id)">Deletar</a></li>
           </ul>
         </div>
       </td>
@@ -64,5 +63,5 @@
   </tbody>
 </table>
 
-<a type="button" class="btn btn-dark" id="botao-confirmacao" routerLink="/eleitores/cadastro">Cadastrar</a>
-<a type="button" class="btn btn-dark" id="botao-confirmacao" routerLink="">Voltar</a>
+<a type="button" class="btn btn-dark botao-final" routerLink="/eleitores/cadastro">Cadastrar</a>
+<a type="button" class="btn btn-dark botao-final" routerLink="">Voltar</a>

@@ -11,6 +11,7 @@ table {
   vertical-align: middle;
   vertical-align: middle;
   border: 2px solid black;
+  font-weight: bold;
 }
 
 #botao-confirmacao {

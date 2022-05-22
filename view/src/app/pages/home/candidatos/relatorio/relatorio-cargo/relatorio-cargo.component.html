@@ -4,18 +4,25 @@
     <table class="table table-light table-striped">
       <thead>
         <tr>
-          <th>Nome</th>
+          <th>Candidato</th>
           <th>Número</th>
           <th>Partido</th>
           <th>Votos</th>
         </tr>
       </thead>
-      <tbody *ngFor="let candidato of relatorio">
-        <tr>
-          <td>{{ candidato.nomeCandidato }}</td>
-          <td>{{ candidato.numeroCandidato }}</td>
-          <td>{{ candidato.legendaCandidato }}</td>
+      <tbody>
+        <tr *ngFor="let candidato of relatorio">
+          <td *ngIf="candidato.nomeCandidato !== 'VOTO EM BRANCO' && candidato.nomeCandidato !== 'VOTO NULO'">{{ candidato.nomeCandidato }}</td>
+
+          <td class="branco-nulo-total" *ngIf="candidato.nomeCandidato === 'VOTO EM BRANCO' || candidato.nomeCandidato === 'VOTO NULO'"  colspan="3">{{ candidato.nomeCandidato }}</td>
+
+          <td *ngIf="candidato.nomeCandidato !== 'VOTO EM BRANCO' && candidato.nomeCandidato !== 'VOTO NULO'">{{ candidato.numeroCandidato }}</td>
+          <td *ngIf="candidato.nomeCandidato !== 'VOTO EM BRANCO' && candidato.nomeCandidato !== 'VOTO NULO'">{{ candidato.legendaCandidato }}</td>
           <td>{{ candidato.votos }}</td>
+        </tr>
+        <tr>
+          <td class="branco-nulo-total" colspan="3">TOTAL</td>
+          <td>{{ totalDeVotos }}</td>
         </tr>
       </tbody>
     </table>

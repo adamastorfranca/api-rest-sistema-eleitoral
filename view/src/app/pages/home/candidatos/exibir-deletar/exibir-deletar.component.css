@@ -1,32 +1,18 @@
 h5 {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   text-transform: uppercase;
   font-weight: bold;
   font-size: 25px;
 }
 
-.col-6 {
-  text-align: left;
-}
-
-#filterCpf {
-  margin-right: 32px;
-}
-
-label {
-  font-weight: bold;
-  margin: 0 10px 30px 0;
-  font-size: 18px;
+.d-flex {
+  margin-bottom: 20px;
 }
 
 input {
-  width: 70%;
-  padding: 5px;
-  padding: 5px;
-}
-
-.segunda-linha {
-  margin-bottom: 40px;
+  margin: 0 10px;
+  max-height: 38px;
+  width: 300px;
 }
 
 table {
@@ -49,6 +35,15 @@ table {
   font-weight: bold;
 }
 
-#botao-confirmacao {
+a:hover {
+  background-color: rgb(120, 120, 120);
+}
+
+.botao-final {
   margin: 25px 10px;
+}
+
+#x {
+  font-size: 35px;
+  margin-left: 10px;
 }

@@ -18,16 +18,13 @@ label {
 table {
   vertical-align: middle;
   border: 2px solid black;
+  font-weight: bold;
 }
 
 .thead-cargos {
   text-transform: uppercase;
   vertical-align: middle;
   font-weight: bold;
-}
-
-#nome {
-  text-align: start;
 }
 
 .dropdown-item{

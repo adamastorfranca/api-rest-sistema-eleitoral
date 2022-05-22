@@ -87,32 +87,17 @@ public class VotoService {
 		return relatorio;
 	}
 
-	public List<RelatorioVotacaoResponseDTO> gerarRelatorioGeral() {
+	public List<RelatorioVotacaoResponseDTO> gerarRelatorioVencedores() {
 		List<Candidato> candidatos = candidatosParticipantes(null);
 		List<RelatorioVotacaoResponseDTO> vencedoresPorCargo = new ArrayList<>();
-		RelatorioVotacaoResponseDTO temp;
 		for (Candidato c : candidatos) {
-			
-			List<RelatorioVotacaoResponseDTO> listaCloneParaIterar = new ArrayList<>(vencedoresPorCargo);
-			int votosCandidato = repository.countByCandidato(c);
-			if (vencedoresPorCargo.isEmpty()) {
-				vencedoresPorCargo.add(gerarInformacoes(c, votosCandidato));
-			}
-			for (RelatorioVotacaoResponseDTO r : listaCloneParaIterar) {
-				if (!r.getNomeCargo().equals(c.getCargo().getNome())) {
-					temp = gerarInformacoes(c, votosCandidato);
-					if (!vencedoresPorCargo.contains(temp)) {
-						vencedoresPorCargo.add(temp);
-					}
+			int votos = repository.countByCandidato(c);
+			for (Candidato c2 : candidatos) {	
+				int votos2 = repository.countByCandidato(c2);
+				if(!c.getId().equals(c2.getId()) && c.getCargo().getId().equals(c2.getCargo().getId()) && votos > votos2) {
+					vencedoresPorCargo.add(gerarInformacoes(c, votos));
 				}
-				if (r.getNomeCargo().equals(c.getCargo().getNome()) && r.getVotos() < votosCandidato) {
-					vencedoresPorCargo.remove(r);
-					temp = gerarInformacoes(c, votosCandidato);
-					if (!vencedoresPorCargo.contains(temp)) {
-						vencedoresPorCargo.add(temp);
-					}
-				}					
-			}	
+			}			
 		}
 		return vencedoresPorCargo;
 	}

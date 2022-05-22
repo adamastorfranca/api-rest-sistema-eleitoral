@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CandidatosService } from 'src/app/services/candidatos.service';
 import { ICandidatoResponse } from 'src/app/interfaces/candidato-response';
 import Swal from 'sweetalert2';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-exibir-deletar',
@@ -16,6 +17,11 @@ export class CandidatoExibirDeletarComponent implements OnInit {
   filterCpf: string = '';
   filterCargo: string = '';
   filterPartido: string = '';
+  blFilterCpf: boolean = false;
+  blFilterNome: boolean = false;
+  blFilterCargo: boolean = false;
+  blFilterPartido: boolean = false;
+  faX = faXmark;
 
   constructor(
     private service: CandidatosService
@@ -36,8 +42,7 @@ export class CandidatoExibirDeletarComponent implements OnInit {
 
   deletar(id: number) {
     Swal.fire({
-      title: 'Você está certo disso?',
-      text: "Tem certeza que deseja remover este candidato?",
+      title: 'Tem certeza que deseja remover este candidato?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Remover',
@@ -46,8 +51,7 @@ export class CandidatoExibirDeletarComponent implements OnInit {
       if (result.isConfirmed) {
         this.service.deletar(id).subscribe(() => {
           Swal.fire({
-            title: 'Removido!',
-            text: 'Candidato removido com sucesso!',
+            title: 'Candidato removido com sucesso!',
             icon: 'success'
           }).then(() => this.listarTodos());
         }, error => {

@@ -8,6 +8,7 @@ export interface ICandidatoResponse {
   legenda: string;
   cargo: ICargoResponse;
   ativo: boolean;
+  votado: boolean;
   criadoEm: Date;
   alteradoEm: Date;
   desativadoEm: Date;

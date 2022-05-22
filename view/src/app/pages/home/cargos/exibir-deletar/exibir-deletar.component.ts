@@ -32,8 +32,7 @@ export class CargoExibirDeletarComponent implements OnInit {
 
   deletar(id: number) {
     Swal.fire({
-      title: 'Você está certo disso?',
-      text: "Tem certeza que deseja remover este cargo?",
+      title: 'Tem certeza que deseja remover este cargo?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Remover',
@@ -42,8 +41,7 @@ export class CargoExibirDeletarComponent implements OnInit {
       if (result.isConfirmed) {
         this.service.deletar(id).subscribe(() => {
           Swal.fire({
-            title: 'Removido!',
-            text: 'Cargo removido com sucesso!',
+            title: 'Cargo removido com sucesso!',
             icon: 'success'
           }).then(() => this.listarTodos());
         }, error => {

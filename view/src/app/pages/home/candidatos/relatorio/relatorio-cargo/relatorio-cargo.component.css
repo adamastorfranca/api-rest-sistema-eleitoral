@@ -1,3 +1,7 @@
+.container {
+  margin: 6% 0 ;
+}
+
 h5 {
   margin-bottom: 40px;
   text-transform: uppercase;
@@ -6,11 +10,16 @@ h5 {
 }
 
 table {
-  margin: 0 35% 2% 35%;
+  margin: 0 31% 2% 29%;
   width: 40%;
   vertical-align: middle;
   vertical-align: middle;
   border: 2px solid black;
+  font-weight: bold;
+}
+
+.branco-nulo-total {
+  text-align: end;
 }
 
 #botao-confirmacao {

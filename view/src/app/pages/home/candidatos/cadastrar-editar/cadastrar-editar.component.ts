@@ -94,11 +94,7 @@ export class CandidatoCadastrarEditarComponent implements OnInit {
 
   buscarCargos() {
     this.cargosService.buscar('', '', '').subscribe((result) => {
-      result.filter((cargo: ICargoResponse) => {
-        if(cargo.ativo) {
-          this.cargos.push(cargo);
-        }
-      });
+      this.cargos = result;
     },
     (error) => {
       alert('Erro ao buscar cargos!')
